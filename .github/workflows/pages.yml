@@ -1,0 +1,47 @@
+# Deploys the repo to GitHub Pages as static files.
+#
+# The legacy Pages builder was used before this and got stuck for ~30 minutes on a
+# deploy, reporting only "Page build failed" with no log to work from. This path
+# publishes the tree as-is and surfaces a real job log when something goes wrong.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it — a half-applied deploy would
+# leave the live site on a mix of old and new files.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          # The default is 10 minutes, and the Pages deployment queue has twice taken
+          # longer than that to pick this repo up — the job aborted while the deployment
+          # itself was still progressing, and a plain re-run then succeeded. Waiting
+          # longer costs nothing when the queue is quick and saves a manual re-run when
+          # it isn't.
+          timeout: 1800000

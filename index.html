@@ -1,0 +1,3320 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dentlora — Care for your smile. Confidently.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ctext y=%2726%27 font-size=%2726%27%3E%F0%9F%A6%B7%3C/text%3E%3C/svg%3E" />
+<meta name="description" content="Find trusted dentists, book appointments, follow your treatment plan, and keep all your dental records organized." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          navy: '#1A2B4B',
+          'navy-deep': '#0E1A33',
+          brand: '#2580C4',
+          'brand-ink': '#1C6BA8',
+          'brand-blue': '#2F68FF',
+          sky: '#6ECBFF',
+          lavender: '#C6B7FF',
+          mist: '#F6F8FF',
+          body: '#5A6B85',
+          muted: '#7A8FAB',
+          faint: '#8C9EBA',
+        },
+        fontFamily: {
+          display: ['Spectral', 'Georgia', 'serif'],
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  /* ============================================================
+     DESIGN TOKENS
+     ============================================================ */
+  :root {
+    /* Brand palette — values taken from the approved Dentlora designs */
+    --navy: #1a2b4b;
+    --navy-deep: #0e1a33;
+    --brand: #2580c4;
+    --brand-ink: #1c6ba8;
+    --brand-blue: #2f68ff;
+    --sky: #6ecbff;
+    --lavender: #c6b7ff;
+    --mist: #f6f8ff;
+
+    /* Text */
+    --ink-strong: #1a2b4b;
+    --ink-body: #5a6b85;
+    --ink-muted: #7a8fab;
+    --ink-faint: #8c9eba;
+    --num-soft: #abc8e9;
+    --num-step: #7caddc;
+
+    /* Surfaces */
+    --surface-page: #eff0fa;
+    --surface-alt: #eaecfb;
+    --glass: rgba(255, 255, 255, 0.62);
+    --glass-strong: rgba(255, 255, 255, 0.82);
+    --glass-line: rgba(255, 255, 255, 0.85);
+    --hairline: rgba(26, 43, 75, 0.08);
+
+    /* Layout — mobile-first: these are the small-screen values, scaled up at breakpoints */
+    --container: 1200px;
+    --container-wide: 1304px;
+    --gutter: 20px;
+    --section-pad: 64px;
+    --art-fade: 72px;
+
+    /* Spacing scale */
+    --s-1: 4px;
+    --s-2: 8px;
+    --s-3: 12px;
+    --s-4: 16px;
+    --s-5: 20px;
+    --s-6: 24px;
+    --s-8: 32px;
+    --s-10: 40px;
+    --s-12: 48px;
+    --s-16: 64px;
+    --s-20: 80px;
+    --s-26: 104px;
+
+    /* Radii */
+    --r-xs: 10px;
+    --r-sm: 14px;
+    --r-md: 18px;
+    --r-lg: 22px;
+    --r-xl: 28px;
+    --r-2xl: 36px;
+    --r-pill: 999px;
+
+    /* Layered, colour-tinted shadows */
+    --shadow-xs: 0 1px 2px rgba(26, 43, 75, 0.04), 0 2px 8px rgba(37, 128, 196, 0.05);
+    --shadow-sm: 0 1px 3px rgba(26, 43, 75, 0.05), 0 6px 18px rgba(37, 128, 196, 0.07);
+    --shadow-md: 0 2px 6px rgba(26, 43, 75, 0.05), 0 14px 34px rgba(74, 96, 190, 0.10);
+    --shadow-lg: 0 4px 12px rgba(26, 43, 75, 0.06), 0 28px 64px rgba(84, 100, 190, 0.14);
+    --shadow-float: 0 2px 5px rgba(26, 43, 75, 0.05), 0 10px 26px rgba(74, 96, 190, 0.12), 0 30px 60px rgba(120, 110, 200, 0.10);
+    --shadow-btn: 0 1px 2px rgba(20, 70, 115, 0.20), 0 6px 16px rgba(37, 128, 196, 0.30), 0 14px 34px rgba(37, 128, 196, 0.18);
+    --shadow-btn-hover: 0 2px 4px rgba(20, 70, 115, 0.22), 0 10px 24px rgba(37, 128, 196, 0.34), 0 20px 46px rgba(37, 128, 196, 0.22);
+    --glow-soft: 0 0 0 1px rgba(255, 255, 255, 0.7) inset, 0 0 40px rgba(174, 196, 255, 0.35);
+
+    /* Motion — spring-style easing */
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --dur-fast: 180ms;
+    --dur: 280ms;
+    --dur-slow: 620ms;
+  }
+
+  /* ============================================================
+     BASE
+     ============================================================ */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 76px;
+  }
+
+  body {
+    background: var(--surface-page);
+    color: var(--ink-body);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* Grain / texture overlay for depth */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    background: rgba(37, 128, 196, 0.18);
+    color: var(--navy);
+  }
+
+  h1, h2, h3, h4, h5, blockquote {
+    font-family: 'Spectral', Georgia, serif;
+    color: var(--ink-strong);
+  }
+
+  /* ============================================================
+     LAYOUT PRIMITIVES
+     ============================================================ */
+  /* named .shell rather than .container so Tailwind's own .container utility
+     (injected after this stylesheet) can't override the max-width */
+  .shell {
+    width: 100%;
+    max-width: calc(var(--container) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .shell-wide {
+    width: 100%;
+    max-width: calc(var(--container-wide) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    position: relative;
+    padding-block: var(--section-pad);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* Section background art (brand assets) */
+  .section-art {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* fade the art at section seams so adjoining backgrounds blend instead of banding */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--art-fade), #000 calc(100% - var(--art-fade)), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 var(--art-fade), #000 calc(100% - var(--art-fade)), transparent 100%);
+  }
+
+  /* Shared by the two arts that carry a four-sided feather. --feather-y is supplied
+     per section (which vertical edges fade differs); --feather-x is the same for both
+     so that where they meet, their horizontal profiles match exactly — feather one
+     and not the other and a visible line reappears across the join. */
+  .feathered-art {
+    --fade-x: clamp(24px, 12%, 200px);
+    --feather-x: linear-gradient(to right,
+        transparent 0,
+        rgba(0, 0, 0, 0.09) calc(var(--fade-x) * 0.3),
+        rgba(0, 0, 0, 0.35) calc(var(--fade-x) * 0.55),
+        rgba(0, 0, 0, 0.72) calc(var(--fade-x) * 0.78),
+        #000 var(--fade-x),
+        #000 calc(100% - var(--fade-x)),
+        rgba(0, 0, 0, 0.72) calc(100% - var(--fade-x) * 0.78),
+        rgba(0, 0, 0, 0.35) calc(100% - var(--fade-x) * 0.55),
+        rgba(0, 0, 0, 0.09) calc(100% - var(--fade-x) * 0.3),
+        transparent 100%);
+    -webkit-mask-image: var(--feather-y), var(--feather-x);
+    mask-image: var(--feather-y), var(--feather-x);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    /* keep only what both ramps agree is opaque, so the corners feather twice over */
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  /* ============================================================
+     TYPOGRAPHY SCALE
+     ============================================================ */
+  .t-display {
+    font-size: clamp(38px, 5vw, 72px);
+    line-height: 1.09;
+    font-weight: 700;
+    letter-spacing: -0.012em;
+  }
+
+  .t-h2-center {
+    font-size: clamp(32px, 4.4vw, 64px);
+    line-height: 1.13;
+    font-weight: 700;
+    letter-spacing: -0.014em;
+  }
+
+  .t-h2 {
+    font-size: clamp(30px, 3.2vw, 45px);
+    line-height: 1.16;
+    font-weight: 700;
+    letter-spacing: -0.012em;
+  }
+
+  .t-h3 {
+    font-size: clamp(26px, 3vw, 47px);
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.012em;
+  }
+
+  .t-card-title {
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 23px;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: var(--ink-strong);
+  }
+
+  .t-lead {
+    font-family: 'Spectral', Georgia, serif;
+    font-size: clamp(17px, 1.5vw, 22px);
+    line-height: 1.68;
+    color: var(--ink-body);
+  }
+
+  .t-sub {
+    font-size: clamp(16px, 1.25vw, 18px);
+    line-height: 1.6;
+    color: #5a6680;
+  }
+
+  .t-body {
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink-body);
+  }
+
+  .t-small {
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-body);
+  }
+
+  .t-overline {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--brand);
+  }
+
+  .accent {
+    color: var(--brand);
+  }
+
+  /* ============================================================
+     COMPONENT — Buttons
+     ============================================================ */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.002em;
+    border-radius: var(--r-pill);
+    padding: 0 24px;
+    min-height: 50px;
+    width: 100%;
+    cursor: pointer;
+    border: 1px solid transparent;
+    /* own stacking context so the glass sheen can sit behind the label */
+    isolation: isolate;
+    transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out),
+      background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out),
+      border-color var(--dur) var(--ease-out), filter var(--dur) var(--ease-out);
+    will-change: transform;
+  }
+
+  /* Specular sheen across the top of both glass buttons. Kept to the upper third and
+     behind the label (z-index:-1) so it reads as a highlight without washing out text. */
+  .btn-primary::after,
+  .btn-ghost::after {
+    content: '';
+    position: absolute;
+    inset: 3px 10px auto;
+    z-index: -1;
+    height: 36%;
+    border-radius: var(--r-pill);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0));
+    pointer-events: none;
+  }
+
+  .btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px #fff, 0 0 0 6px rgba(37, 128, 196, 0.55);
+  }
+
+  /* Frosted periwinkle capsule with a thick refractive rim — the inset ring plus the
+     inward-spreading white glow are what read as a glass edge rather than a border. */
+  .btn-primary {
+    color: var(--brand);
+    border-color: rgba(255, 255, 255, 0.78);
+    background-color: rgba(168, 193, 238, 0.86);
+    background-image: linear-gradient(
+      150deg,
+      rgba(216, 230, 251, 0.92) 0%,
+      rgba(180, 203, 243, 0.88) 36%,
+      rgba(145, 176, 233, 0.9) 72%,
+      rgba(127, 159, 227, 0.93) 100%
+    );
+    /* soft white lift so the brand-blue label separates from the frosted fill */
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.9),
+      inset 0 0 16px 4px rgba(255, 255, 255, 0.45),
+      inset 0 3px 6px rgba(255, 255, 255, 0.6),
+      inset 0 -7px 15px rgba(116, 148, 214, 0.2),
+      0 4px 14px rgba(120, 150, 220, 0.18),
+      0 14px 32px rgba(120, 150, 220, 0.2),
+      0 0 34px rgba(176, 203, 246, 0.55);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    border-color: #fff;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 1),
+      inset 0 0 20px 5px rgba(255, 255, 255, 0.55),
+      inset 0 3px 7px rgba(255, 255, 255, 0.7),
+      inset 0 -7px 15px rgba(116, 148, 214, 0.22),
+      0 5px 18px rgba(120, 150, 220, 0.22),
+      0 20px 42px rgba(120, 150, 220, 0.24),
+      0 0 44px rgba(176, 203, 246, 0.72);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0) scale(0.985);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85),
+      inset 0 3px 10px rgba(96, 130, 200, 0.28),
+      0 3px 10px rgba(120, 150, 220, 0.2),
+      0 0 24px rgba(176, 203, 246, 0.4);
+  }
+
+  .btn-primary .icon {
+    transition: transform var(--dur) var(--ease-spring);
+  }
+
+  .btn-primary:hover .icon {
+    transform: translateX(3px);
+  }
+
+  /* Near-clear glass capsule — the same thick rim, almost no fill so the hero art
+     stays visible through it */
+  .btn-ghost {
+    color: var(--ink-strong);
+    border-color: rgba(255, 255, 255, 0.88);
+    background-color: rgba(255, 255, 255, 0.32);
+    background-image: linear-gradient(
+        160deg,
+        rgba(255, 255, 255, 0.52) 0%,
+        rgba(255, 255, 255, 0.2) 46%,
+        rgba(238, 243, 253, 0.34) 100%
+      ),
+      linear-gradient(125deg, rgba(198, 183, 255, 0.12) 0%, rgba(110, 203, 255, 0.1) 100%);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.88),
+      inset 0 0 16px 4px rgba(255, 255, 255, 0.5),
+      inset 0 3px 6px rgba(255, 255, 255, 0.65),
+      0 4px 14px rgba(74, 96, 190, 0.08),
+      0 12px 30px rgba(74, 96, 190, 0.12),
+      0 0 30px rgba(190, 212, 245, 0.45);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    padding-inline: 20px 24px;
+  }
+
+  .btn-ghost:hover {
+    transform: translateY(-2px);
+    border-color: #fff;
+    background-color: rgba(255, 255, 255, 0.46);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 1),
+      inset 0 0 20px 5px rgba(255, 255, 255, 0.6),
+      inset 0 3px 7px rgba(255, 255, 255, 0.75),
+      0 5px 18px rgba(74, 96, 190, 0.1),
+      0 18px 38px rgba(74, 96, 190, 0.16),
+      0 0 40px rgba(190, 212, 245, 0.62);
+  }
+
+  .btn-ghost:active {
+    transform: translateY(0) scale(0.985);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85),
+      inset 0 3px 10px rgba(74, 96, 190, 0.16),
+      0 3px 10px rgba(74, 96, 190, 0.1);
+  }
+
+  /* small glass disc holding the play glyph */
+  .btn-play {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--r-pill);
+    background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.95) 0%, rgba(210, 230, 248, 0.92) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 1px 3px rgba(37, 128, 196, 0.18),
+      0 0 10px rgba(160, 200, 240, 0.4);
+    color: var(--brand);
+    flex: none;
+    transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out),
+      background-image var(--dur) var(--ease-out);
+  }
+
+  .btn-ghost:hover .btn-play {
+    background-image: linear-gradient(160deg, rgba(255, 255, 255, 1) 0%, rgba(196, 222, 246, 0.95) 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 2px 6px rgba(37, 128, 196, 0.24),
+      0 0 16px rgba(160, 200, 240, 0.6);
+    transform: scale(1.06);
+  }
+
+  .btn-sm {
+    font-size: 16px;
+    min-height: 49px;
+    padding: 0 28px;
+  }
+
+  /* ============================================================
+     COMPONENT — Pills / tags / badges
+     ============================================================ */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .pill-hero {
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.3;
+    padding: 7px 24px;
+    gap: 11px;
+    color: var(--ink-strong);
+  }
+
+  .pill-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: var(--r-pill);
+    background: var(--brand);
+    flex: none;
+    box-shadow: 0 0 0 3px rgba(37, 128, 196, 0.16);
+  }
+
+  .pill-tag {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--brand);
+    font-size: 12.5px;
+    line-height: 1.2;
+    padding: 6px 20px;
+    gap: 8px;
+  }
+
+  /* ============================================================
+     HERO — role toggle
+     ============================================================ */
+  /* The options are .btn .btn-primary / .btn .btn-ghost — the same glass as the
+     hero CTAs, selected state included, so nothing about that treatment is
+     restated here. These rules only shrink a full-size button into a toggle. */
+  .role-toggle {
+    display: flex;
+    /* left edge lines up with the badge, headline and CTAs */
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    /* one row at every width — the labels shrink, they never wrap */
+    flex-wrap: nowrap;
+  }
+
+  /* Specificity (0,2,0) on purpose: .btn re-declares width/min-height/padding
+     inside the >=640px query, which would otherwise win on source order. */
+  .role-toggle .role-opt {
+    width: auto;
+    flex: none;
+    white-space: nowrap;
+    min-height: 0;
+    /* shrinks with the viewport so both options stay on one line down to 320px */
+    font-size: clamp(13px, 3.1vw, 15px);
+    padding: 10px clamp(14px, 3.4vw, 22px);
+  }
+
+  /* .btn-ghost labels are --ink-strong, which against this background is 12.4:1
+     while the selected option's --brand label is 3.7:1 — inherited as-is, the
+     unselected option reads as the prominent one. --ink-body (4.8:1) steps it
+     back below the selected state while still clearing AA. */
+  .role-toggle .role-opt[aria-selected='false'] {
+    color: var(--ink-body);
+  }
+
+  .role-toggle .role-opt:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  /* The copy that swaps with the toggle. Only opacity and a small lift move —
+     the reduced-motion block at the end of this stylesheet already flattens
+     every transition-duration, so this becomes an instant swap there. */
+  .hero-variant {
+    transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+
+  .hero-variant.is-swapping {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  /* ============================================================
+     COMPONENT — Surfaces (layering system: base → elevated → floating)
+     ============================================================ */
+  .surface-elevated {
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.34));
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: var(--r-xl);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    box-shadow: var(--shadow-md);
+  }
+
+  .surface-floating {
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    border-radius: var(--r-md);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    box-shadow: var(--shadow-float);
+  }
+
+  .surface-inner {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-xs);
+  }
+
+  /* ============================================================
+     COMPONENT — Icon tiles & badges
+     ============================================================ */
+  .icon-tile {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    color: var(--brand);
+    flex: none;
+    box-shadow: var(--shadow-xs);
+    transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out);
+  }
+
+  .icon-tile .icon {
+    width: 19px;
+    height: 19px;
+  }
+
+  .icon-tile-lg {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--r-sm);
+  }
+
+  .icon-tile-lg .icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .icon-circle {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--r-pill);
+    background: #dfe9f8;
+    color: var(--brand);
+    flex: none;
+  }
+
+  .icon-orb {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: var(--r-pill);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.7));
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    color: var(--brand);
+    box-shadow: 0 2px 6px rgba(26, 43, 75, 0.06), 0 14px 30px rgba(74, 96, 190, 0.14),
+      0 0 0 8px rgba(255, 255, 255, 0.28);
+    transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out);
+  }
+
+  .icon {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex: none;
+  }
+
+  .icon-sm { width: 18px; height: 18px; }
+  .icon-xs { width: 15px; height: 15px; }
+  .icon-lg { width: 24px; height: 24px; }
+
+  /* ============================================================
+     COMPONENT — Header
+     ============================================================ */
+  .site-header {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 50;
+    padding-block: 14px;
+    transition: background-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out),
+      padding var(--dur) var(--ease-out), backdrop-filter var(--dur) var(--ease-out);
+  }
+
+  .site-header.is-stuck {
+    padding-block: 10px;
+    background: rgba(240, 241, 251, 0.72);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6), 0 8px 30px rgba(74, 96, 190, 0.08);
+  }
+
+  .logo img {
+    height: 32px;
+    width: auto;
+    display: block;
+  }
+
+  /* nav visibility is owned by this stylesheet (not Tailwind utilities) so the
+     mobile-first cascade stays readable and independent of injection order */
+  .nav-desktop,
+  .header-cta {
+    display: none;
+  }
+
+  .nav-link {
+    position: relative;
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #3c5070;
+    padding: 6px 2px;
+    border-radius: 6px;
+    transition: color var(--dur) var(--ease-out), transform var(--dur) var(--ease-spring);
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--brand);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform var(--dur) var(--ease-spring), opacity var(--dur) var(--ease-out);
+    opacity: 0;
+  }
+
+  .nav-link:hover {
+    color: var(--ink-strong);
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+    opacity: 0.55;
+  }
+
+  .nav-link:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 128, 196, 0.4);
+  }
+
+  .nav-link.is-active {
+    color: var(--ink-strong);
+    font-weight: 700;
+  }
+
+  .nav-link.is-active::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  .nav-toggle {
+    display: grid;
+    width: 46px;
+    height: 46px;
+    place-items: center;
+    border-radius: var(--r-sm);
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    color: var(--ink-strong);
+    box-shadow: var(--shadow-xs);
+    transition: transform var(--dur) var(--ease-spring), background-color var(--dur) var(--ease-out);
+  }
+
+  .nav-toggle:hover { background: #fff; }
+  .nav-toggle:active { transform: scale(0.94); }
+  .nav-toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 128, 196, 0.45);
+  }
+
+  .mobile-nav {
+    position: fixed;
+    inset: 0;
+    z-index: 49;
+    background: rgba(239, 240, 250, 0.94);
+    backdrop-filter: blur(26px) saturate(160%);
+    -webkit-backdrop-filter: blur(26px) saturate(160%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding: 96px 28px 40px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out),
+      visibility var(--dur);
+  }
+
+  .mobile-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .mobile-nav a {
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--ink-strong);
+    padding: 14px 4px;
+    border-bottom: 1px solid var(--hairline);
+    transition: color var(--dur) var(--ease-out), transform var(--dur) var(--ease-spring);
+  }
+
+  .mobile-nav a:hover { color: var(--brand); transform: translateX(4px); }
+  .mobile-nav a:focus-visible { outline: none; color: var(--brand); }
+
+  /* the CTA is an <a> too — keep it a button, not a nav row */
+  .mobile-nav a.btn {
+    font-size: 17px;
+    color: var(--brand);
+    border-bottom: 0;
+    padding: 0 30px;
+  }
+
+  .mobile-nav a.btn:hover { color: var(--brand); transform: translateY(-2px); }
+  .mobile-nav a.btn:focus-visible { color: var(--brand); }
+
+  /* ============================================================
+     SECTION — Hero
+     ============================================================ */
+  .hero {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    padding-block: 104px 56px;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hero-art {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image: url('brand%20assets/7a65b642-1c9b-4b78-97e3-8c14bc6cbc1d.png');
+    background-size: 210% auto;
+    background-position: 68% 88%;
+    background-repeat: no-repeat;
+    background-color: #f1f1fa;
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%);
+  }
+
+  /* soft light wash so hero copy stays readable over the art.
+     Stacked layouts fade top→bottom; the side-by-side desktop layout uses a radial
+     wash that only lifts the left-hand column. */
+  .hero-wash {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(243, 244, 253, 0.95) 0%, rgba(243, 244, 253, 0.8) 46%, rgba(243, 244, 253, 0.24) 76%, rgba(243, 244, 253, 0) 100%);
+    pointer-events: none;
+    /* fade out with the art, so the wash can't end in a hard line at the section seam */
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 120px), transparent 100%);
+  }
+
+  .hero-copy {
+    max-width: 620px;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .trust-item .icon-circle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .trust-item dt {
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--ink-strong);
+    line-height: 1.35;
+  }
+
+  .trust-item dd {
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* ============================================================
+     SECTION — All-in-one care (connected journey)
+     ============================================================ */
+  .journey {
+    position: relative;
+    padding-block: 60px;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .journey-art {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    /* Base wash only — the artwork itself rides on ::before (portrait file below
+       1024px) or on this element's own background (the tooth, at ≥1024px). The wash
+       sits under both and shows through wherever they feather out. */
+    background-image: radial-gradient(84% 44% at 50% 28%, rgba(219, 229, 252, 0.92), transparent 72%),
+      radial-gradient(66% 38% at 84% 82%, rgba(205, 196, 250, 0.45), transparent 74%);
+    background-size: cover;
+    background-position: center;
+    background-color: #ebeefb;
+
+    /* Feathered on all four sides (sides come from .feathered-art): the artwork is
+       full-bleed here, so a straight cut at the section edges left a visible line
+       where the waves and glow stop. The ramp is sized to stay clear of the tooth
+       (it occupies roughly the middle 40% x 45%), so nothing fades the focal point,
+       and fading to transparent reveals the lighter page background — it lightens
+       the edges, it does not vignette them. At ≥1024px the top edge stops fading and
+       hands over to .features-art instead. */
+    --fade-y: clamp(80px, 22%, 220px);
+    --feather-y: linear-gradient(to bottom,
+        transparent 0,
+        rgba(0, 0, 0, 0.09) calc(var(--fade-y) * 0.3),
+        rgba(0, 0, 0, 0.35) calc(var(--fade-y) * 0.55),
+        rgba(0, 0, 0, 0.72) calc(var(--fade-y) * 0.78),
+        #000 var(--fade-y),
+        #000 calc(100% - var(--fade-y)),
+        rgba(0, 0, 0, 0.72) calc(100% - var(--fade-y) * 0.78),
+        rgba(0, 0, 0, 0.35) calc(100% - var(--fade-y) * 0.55),
+        rgba(0, 0, 0, 0.09) calc(100% - var(--fade-y) * 0.3),
+        transparent 100%);
+  }
+
+  .journey-stage {
+    position: relative;
+    aspect-ratio: 1 / 0.92;
+  }
+
+  /* Below 1024px the section carries its own portrait artwork instead of the tooth.
+     Held on a layer of its own rather than on .journey-art's background so the swap at
+     the breakpoint can cross-fade — .journey-art's background-image changes instantly
+     and cannot be transitioned. ≥1024px resets background-image to none, so desktop
+     never downloads this file (only the winning cascade value is fetched); the first
+     drag across the breakpoint fetches it, every one after that is cached. */
+  .journey-art::before {
+    content: '';
+    position: absolute;
+    /* A band across the top of the section, not the whole of it. Two things ruled that
+       out: stretched over the full ~1330px section the portrait artwork lost ~60% of its
+       width to `cover`, and either way the saturated middle of the image landed behind
+       the copy and cost the body text its contrast. Bounded to the floating-pill area it
+       backs the part of the section that wants a backdrop and leaves the text on the
+       light wash. 133vw is the artwork's own aspect (1086x1448), so on a phone the band
+       matches it exactly and nothing is cropped; the 640px cap stops the band growing
+       past the pills on wider tablets, at the price of some top/bottom crop there —
+       centred, so the sphere stays in frame. */
+    inset: 0 0 auto 0;
+    height: min(133vw, 640px);
+    background-image: url('brand%20assets/journey-bg-mobile.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* dissolve into the wash before the copy starts — relative to the band, so it lands
+       in the same place proportionally at every width */
+    -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 58%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0, #000 58%, transparent 100%);
+    opacity: 1;
+    transition: opacity 450ms var(--ease-out);
+  }
+
+  .float-pill {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px 12px 12px;
+    border-radius: var(--r-md);
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    box-shadow: var(--shadow-float);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-strong);
+    white-space: nowrap;
+    transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out);
+    animation: floaty 7s var(--ease-out) infinite;
+  }
+
+  .float-pill:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .float-pill .icon-circle {
+    width: 28px;
+    height: 28px;
+    background: #e3edfa;
+  }
+
+  .float-pill .icon-sm {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Pill placement lives in CSS (not inline styles) so each breakpoint can
+     re-place them — on narrow stages the desktop offsets would overflow. */
+  .fp-1 { left: 1%;  top: 2%;  animation-delay: 0s; }
+  .fp-2 { left: 42%; top: 21%; animation-delay: 0.9s; }
+  .fp-3 { left: 5%;  top: 40%; animation-delay: 1.7s; }
+  .fp-4 { left: 40%; top: 59%; animation-delay: 2.4s; }
+  .fp-5 { left: 0%;  top: 78%; animation-delay: 3.1s; }
+
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+  }
+
+  .feature-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .feature-row h3 {
+    font-size: 17px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.004em;
+    margin-bottom: 4px;
+  }
+
+  .feature-row p {
+    font-size: 15px;
+    line-height: 1.42;
+    color: var(--ink-body);
+  }
+
+  .feature-row:hover .icon-tile {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ============================================================
+     SECTION — Problem
+     ============================================================ */
+  .problem-art {
+    background-image: url('brand%20assets/40c8ea9f-8ace-437d-b4dd-cd157612a9d0.png');
+    background-color: #eef0fc;
+  }
+
+  .problem-stage {
+    position: relative;
+  }
+
+  /* dashed connector threading the left-hand cards together — only meaningful
+     once the cards are absolutely placed, so it stays hidden while stacked */
+  .problem-thread {
+    display: none;
+    position: absolute;
+    left: 18.2%;
+    top: 17%;
+    bottom: 12%;
+    width: 1px;
+    border-left: 1px dashed rgba(37, 128, 196, 0.34);
+    z-index: 2;
+  }
+
+  .problem-thread::before {
+    content: '';
+    position: absolute;
+    left: -3.5px;
+    top: -4px;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--r-pill);
+    border: 1px solid rgba(37, 128, 196, 0.5);
+    background: #fff;
+  }
+
+  .problem-photo {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    margin-inline: auto;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    isolation: isolate;
+  }
+
+  .problem-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* image treatment: gradient overlay + colour layer */
+  .problem-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(to top, rgba(14, 26, 51, 0.18), rgba(14, 26, 51, 0) 55%);
+    pointer-events: none;
+  }
+
+  .problem-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(150deg, rgba(198, 214, 255, 0.24), rgba(226, 216, 255, 0.16));
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  /* Stacked by default; absolutely placed around the photo from tablet up. */
+  .float-card {
+    position: relative;
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: var(--r-sm);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    box-shadow: var(--shadow-float);
+    z-index: 3;
+    transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out);
+  }
+
+  .float-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .float-card h4 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-strong);
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+
+  .float-card p,
+  .float-card span {
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--ink-muted);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 11px;
+    border-radius: var(--r-pill);
+    background: #e6ecfd;
+    color: var(--brand);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .problem-list {
+    position: relative;
+  }
+
+  /* connector line running through the icon tiles */
+  .problem-list::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    top: 46px;
+    bottom: 46px;
+    width: 1px;
+    background: linear-gradient(to bottom, rgba(37, 128, 196, 0), rgba(37, 128, 196, 0.22) 12%, rgba(37, 128, 196, 0.22) 88%, rgba(37, 128, 196, 0));
+  }
+
+  .problem-item {
+    position: relative;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .problem-item h3 {
+    font-size: 18px;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.006em;
+    margin-bottom: 6px;
+  }
+
+  .problem-item p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-body);
+    max-width: 44ch;
+  }
+
+  .problem-item:hover .icon-tile {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ============================================================
+     SECTION — How it works
+     ============================================================ */
+  .steps-art {
+    background-image: url('brand%20assets/f461ba4c-28df-4551-9644-d53dcc01c30c.png');
+    background-color: #edeefb;
+  }
+
+  /* Fill stack, bottom → top (mirrors the approved design file):
+       #FFFFFF                                   100%
+       linear CCC3FF(70%) → 6195D5 → 207ABC       50%   (sits under the opaque image;
+                                                         kept as the fallback if it fails)
+       Cards theme.png (cover)                   100%
+       linear DBEAFE → EFF6FF → F0F9FF            20%
+     CSS has no per-layer opacity, so each layer's opacity is baked into its stop
+     colours — e.g. the 70% stop of the 50% layer becomes 0.7 × 0.5 = 0.35 alpha. */
+  .steps-panel {
+    position: relative;
+    border-radius: var(--r-xl);
+    padding: 36px 20px 34px;
+    background-color: #ffffff;
+    background-image: linear-gradient(
+        90deg,
+        rgba(219, 234, 254, 0.2) 0%,
+        rgba(239, 246, 255, 0.2) 50%,
+        rgba(240, 249, 255, 0.2) 100%
+      ),
+      url('brand%20assets/Cards%20theme.png'),
+      linear-gradient(
+        90deg,
+        rgba(204, 195, 255, 0.35) 24%,
+        rgba(97, 149, 213, 0.5) 53%,
+        rgba(32, 122, 188, 0.5) 92%
+      );
+    background-size: auto, cover, auto;
+    background-position: center, center, center;
+    background-repeat: no-repeat;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 26px;
+    align-items: stretch;
+    position: relative;
+  }
+
+  /* horizontal connector between the orbs — only drawn for the 5-across layout */
+  .steps-grid::before {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 38px;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(to right, rgba(37, 128, 196, 0), rgba(37, 128, 196, 0.28) 10%, rgba(37, 128, 196, 0.28) 90%, rgba(37, 128, 196, 0));
+    z-index: 0;
+  }
+
+  .step {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 16px;
+    text-align: left;
+    z-index: 1;
+    height: 100%;
+  }
+
+  .step-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 100%;
+  }
+
+  .step-num {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--num-step);
+    margin: 0 0 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .step-card {
+    width: 100%;
+    flex: 1;
+    padding: 14px 16px 16px;
+    border-radius: var(--r-sm);
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    box-shadow: var(--shadow-xs);
+    transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out),
+      background-color var(--dur) var(--ease-out);
+  }
+
+  .step:hover .step-card {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: var(--shadow-md);
+  }
+
+  .step:hover .icon-orb {
+    transform: translateY(-4px) scale(1.03);
+  }
+
+  .step-card h3 {
+    font-size: 15px;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.004em;
+    margin-bottom: 8px;
+  }
+
+  .step-card p {
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--ink-body);
+  }
+
+  /* ============================================================
+     SECTION — CTA banner
+     ============================================================ */
+  .cta-card {
+    position: relative;
+    border-radius: var(--r-xl);
+    padding: 36px 22px 40px;
+    overflow: hidden;
+    isolation: isolate;
+    background: #e6eafc;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* inset negatively so the asset's own rounded-card edge is cropped away */
+  .cta-card::before {
+    content: '';
+    position: absolute;
+    inset: -44px -24px;
+    z-index: -1;
+    background-image: url('brand%20assets/bae38d54-5a66-4526-b9d1-3a96b3d89b18.png');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .cta-copy {
+    max-width: 100%;
+  }
+
+  /* ============================================================
+     SECTION — Patient app showcase
+     ============================================================ */
+  /* Role-gated: the hero toggle publishes data-role on <html> and everything that
+     varies by role reads it from there, so the state is never duplicated.
+     [data-for] marks a run of content that belongs to one track only — the other is
+     removed from the layout AND from the accessibility tree, so screen readers and
+     find-in-page never see the copy that isn't showing. */
+  html[data-role='clinics'] .app-showcase { display: none; }
+
+  [data-for] { display: contents; }
+  html[data-role='patients'] [data-for='clinics'],
+  html[data-role='clinics'] [data-for='patients'] { display: none; }
+
+  /* display:contents on the wrapper would collapse a grid/flex child, so blocks that
+     ARE layout items opt out with data-for-block */
+  [data-for-block] { display: block; }
+  html[data-role='patients'] [data-for-block='clinics'],
+  html[data-role='clinics'] [data-for-block='patients'] { display: none; }
+
+  .app-showcase-head {
+    max-width: 560px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .phone-stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: var(--s-12);
+  }
+
+  /* Notification cards flanking the phone, as in the Flighty reference: they carry the
+     story the phone screen alone can't, and fill what was otherwise a lot of empty
+     space either side of a 300px frame on a wide viewport.
+     Hidden below 1024px — there is no room beside the phone, and overlapping them onto
+     it would bury the screen. */
+  /* Below 1280 there is no room to flank the phone, so the cards stack under it —
+     the tabs still change something at every width. They only fly out to the sides
+     where the reference layout actually fits. */
+  .phone-notes { display: none; }
+
+  .phone-notes[data-active='true'] {
+    display: grid;
+    gap: var(--s-3);
+    margin-top: var(--s-6);
+    width: min(430px, 100%);
+    margin-inline: auto;
+  }
+
+  .phone-note {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    padding: 11px 13px;
+    border-radius: var(--r-md);
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    box-shadow: var(--shadow-float);
+    font-family: 'Inter', system-ui, sans-serif;
+    text-align: left;
+    /* start low and translucent; the active tab lifts them into place */
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 320ms var(--ease-out), transform 320ms var(--ease-out);
+    pointer-events: none;
+  }
+
+  .phone-note dt {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--ink-strong);
+  }
+
+  .phone-note dd {
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--ink-muted);
+  }
+
+  .phone-note .icon-circle {
+    width: 32px;
+    height: 32px;
+    flex: none;
+    background: #e7effa;
+    color: var(--brand);
+  }
+
+  /* Keyed off a sibling group rather than living inside .phone-panel: the panels sit
+     inside .phone-screen, which clips to the frame, so cards nested there would be cut
+     off at the bezel. Depth, straight from the reference: the outer cards sit further
+     back, smaller and softened, so the cluster reads as a stack rather than a flat row. */
+  .phone-notes[data-active='true'] .phone-note { opacity: 1; transform: translateY(0); }
+  .phone-notes[data-active='true'] .phone-note[data-depth='far'] {
+    opacity: 0.45;
+    filter: blur(1.4px);
+    transform: translateY(0) scale(0.92);
+  }
+
+  /* The dimmed pair sits partly behind the phone, and a card is a box: its border,
+     white fill and shadow still drew a crisp rectangle at 45% opacity, which read as a
+     stray frame across the mockup. Depth here should come from the content receding,
+     not from a visible container, so the far pair keeps only its text. */
+  .phone-note[data-depth='far'] {
+    background: none;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* staggered so they arrive in sequence rather than as one block */
+  .phone-note:nth-of-type(1) { transition-delay: 60ms; }
+  .phone-note:nth-of-type(2) { transition-delay: 130ms; }
+  .phone-note:nth-of-type(3) { transition-delay: 200ms; }
+  .phone-note:nth-of-type(4) { transition-delay: 270ms; }
+
+  /* The mockup is a PNG of a hand holding the phone with the app screen rendered into
+     the glass, cropped to its subject (1332x1666 of the original 2400x1792 — the rest
+     was transparent) and scaled to 900 wide. It sets the height of this column; the
+     cards are positioned against it. */
+  .phone-media {
+    position: relative;
+    width: min(430px, 82vw);
+    margin-inline: auto;
+  }
+
+  .phone-shot {
+    display: block;
+    width: 100%;
+    height: auto;
+    position: relative;
+    z-index: 0;
+    /* No drop-shadow here. Paired with the mask below it produced a visible rectangle:
+       the mask lays a full-width soft alpha band across the bottom, and the shadow
+       renders that band rather than the hand's silhouette. The photo carries its own
+       lighting, so the shadow was not buying much anyway.
+       The photo is cropped to its subject, so the forearm stops dead on the bottom
+       edge. Fading it out reads as depth instead of a cut. A mask rather than a white
+       overlay on purpose: it dissolves into whatever the section background actually
+       is, so it can't mismatch --surface-page if that ever changes. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, rgba(0, 0, 0, 0.82) 88%,
+        rgba(0, 0, 0, 0.34) 95%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 80%, rgba(0, 0, 0, 0.82) 88%,
+        rgba(0, 0, 0, 0.34) 95%, transparent 100%);
+  }
+
+  /* A tab with its own mockup stacks a second shot over the booking one and cross-fades.
+     Swapping the whole photograph rather than laying a screenshot into the glass, because
+     the PNGs are all the same photograph cut from the identical rect of their 2400x1792
+     sources — their alpha channels are identical and the best alignment shift measures
+     (0,0), so the hand holds still and only the screen reads as changing. The booking
+     shot stays in flow and keeps setting the column height; tabs without a mockup of
+     their own fall back to it. */
+  .phone-shot-alt {
+    position: absolute;
+    /* Anchored to the bottom, not the top: below 1280px the cards stack in normal flow
+       above the booking shot, so the top of .phone-media is not where the phone starts.
+       The booking shot is the last in-flow child, so its bottom edge is the container's
+       bottom edge at every width, and both shots are the same size — align the bottoms
+       and they land on each other. */
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 260ms var(--ease-out);
+  }
+
+  .phone-shot-alt[data-active='true'] { opacity: 1; }
+
+  /* Tab bar — same glass options as the role toggle (.role-toggle / .role-opt),
+     tightened for four of them. */
+  .phone-tabs {
+    position: relative;
+    z-index: 3;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px;
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    box-shadow: var(--shadow-md);
+    max-width: calc(100vw - var(--gutter) * 2);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .phone-tabs::-webkit-scrollbar { display: none; }
+
+  /* Four labels have to share a phone's width, so the smallest screens drop the
+     icons and run tight; ≥480px brings them back. Measured at 320px this leaves the
+     bar 254px inside 266px of usable track — no horizontal scrolling. */
+  .phone-tabs .role-opt {
+    gap: 7px;
+    font-size: 12px;
+    padding: 9px 8px;
+    /* four tabs have to share a phone's width, but not at the cost of the touch
+       target — 44px is the minimum comfortable tap size */
+    min-height: 44px;
+  }
+
+  .phone-tabs .role-opt .icon {
+    display: none;
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ============================================================
+     SECTION — Features grid
+     ============================================================ */
+  .features-art {
+    /* 7127b03b-…png with its baked-in ~26px frame cropped off. The frame was a hard
+       19-unit step one row in from each edge; invisible while the art faded out at the
+       seams, but it reads as a line the moment the bottom edge runs full-opacity into
+       the journey section. */
+    background-image: url('brand%20assets/features-bg.png');
+    background-color: #eff1fd;
+    /* both vertical edges fade here; at ≥1024px the bottom one is handed to .journey-art */
+    --feather-y: linear-gradient(to bottom,
+        transparent 0,
+        rgba(0, 0, 0, 0.09) calc(var(--art-fade) * 0.3),
+        rgba(0, 0, 0, 0.35) calc(var(--art-fade) * 0.55),
+        rgba(0, 0, 0, 0.72) calc(var(--art-fade) * 0.78),
+        #000 var(--art-fade),
+        #000 calc(100% - var(--art-fade)),
+        rgba(0, 0, 0, 0.72) calc(100% - var(--art-fade) * 0.78),
+        rgba(0, 0, 0, 0.35) calc(100% - var(--art-fade) * 0.55),
+        rgba(0, 0, 0, 0.09) calc(100% - var(--art-fade) * 0.3),
+        transparent 100%);
+  }
+
+  .feature-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 28px 22px 26px;
+    border-radius: var(--r-lg);
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.26));
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out);
+  }
+
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .feature-card__num {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--num-soft);
+    letter-spacing: 0.01em;
+    margin-bottom: 18px;
+  }
+
+  .feature-card__body {
+    font-size: 16px;
+    line-height: 1.62;
+    color: #566580;
+    margin-top: 12px;
+  }
+
+  .mock {
+    position: relative;
+    margin-top: 30px;
+    padding: 20px 18px 48px;
+    border-radius: var(--r-sm);
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-xs);
+    flex: 1;
+  }
+
+  .mock-badge {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--r-pill);
+    background: #e7effa;
+    color: var(--brand);
+  }
+
+  .progress-track {
+    height: 5px;
+    border-radius: var(--r-pill);
+    background: #dfe6f3;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: var(--r-pill);
+    background: linear-gradient(90deg, var(--brand), #4aa3dd);
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 1100ms var(--ease-out);
+  }
+
+  .is-inview .progress-fill {
+    transform: scaleX(1);
+  }
+
+  .mock-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--ink-strong);
+  }
+
+  .mock-file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: var(--r-xs);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-xs);
+    transition: transform var(--dur) var(--ease-spring);
+  }
+
+  .mock-file:hover { transform: translateX(3px); }
+
+  .mock-file .icon-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--r-xs);
+    background: #e7effa;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-left: 22px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--r-pill);
+    background: #c9d5e6;
+  }
+
+  .timeline-item.is-current::before {
+    background: var(--brand);
+    box-shadow: 0 0 0 3px rgba(37, 128, 196, 0.18);
+  }
+
+  /* ============================================================
+     SECTION — Footer
+     ============================================================ */
+  .site-footer {
+    position: relative;
+    padding-block: 44px 32px;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .site-footer .logo-mark {
+    height: 44px;
+  }
+
+  .footer-art {
+    background-image: url('brand%20assets/f461ba4c-28df-4551-9644-d53dcc01c30c.png');
+    background-position: center bottom;
+    background-color: #eaecfb;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 110px, #000 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 110px, #000 100%);
+  }
+
+  .footer-link {
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 16px;
+    color: #3c5070;
+    transition: color var(--dur) var(--ease-out), transform var(--dur) var(--ease-spring);
+    display: inline-block;
+    border-radius: 6px;
+  }
+
+  .footer-link:hover { color: var(--brand); transform: translateY(-1px); }
+  .footer-link:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 128, 196, 0.4);
+  }
+
+  /* work email */
+  .footer-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink-strong);
+    border-radius: var(--r-pill);
+    transition: color var(--dur) var(--ease-out), transform var(--dur) var(--ease-spring);
+  }
+
+  .footer-email:hover {
+    color: var(--brand);
+    transform: translateX(2px);
+  }
+
+  .footer-email:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 128, 196, 0.4);
+  }
+
+  .footer-email:hover .icon-circle {
+    background: var(--brand);
+    color: #fff;
+  }
+
+  .footer-email .icon-circle {
+    transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+  }
+
+  /* social accounts */
+  .social-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .social-link {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    color: var(--brand);
+    box-shadow: var(--shadow-xs);
+    transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) var(--ease-out),
+      background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+  }
+
+  .social-link:hover {
+    background: var(--brand);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .social-link:active {
+    transform: translateY(-1px) scale(0.96);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .social-link:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px #fff, 0 0 0 6px rgba(37, 128, 196, 0.5);
+  }
+
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: var(--r-pill);
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-xs);
+    font-size: 14px;
+    color: var(--ink-muted);
+  }
+
+  .lang-switch button {
+    font-size: 14px;
+    color: var(--ink-muted);
+    border-radius: 5px;
+    transition: color var(--dur) var(--ease-out);
+    /* the label alone was 21px tall — too small to tap reliably. Padding rather than
+       a bare min-height so the hit area actually grows around the text. */
+    min-height: 44px;
+    padding-inline: 10px;
+  }
+
+  .lang-switch button:hover { color: var(--brand); }
+  .lang-switch button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 128, 196, 0.4);
+  }
+
+  .lang-switch button.is-active {
+    color: var(--brand);
+    font-weight: 600;
+  }
+
+  /* ============================================================
+     SCROLL REVEAL
+     ============================================================ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  }
+
+  .reveal.is-inview {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============================================================
+     RESPONSIVE — everything above is the small-screen baseline.
+     Breakpoints below only ever add or enlarge (min-width, mobile-first).
+       ≥ 480px  large phone
+       ≥ 640px  phablet — buttons stop being full-width
+       ≥ 768px  tablet — floating cards take their positions
+       ≥ 1024px desktop nav, two-column sections, 5-across steps
+       ≥ 1280px full reference-scale layout
+     ============================================================ */
+
+  /* ---- ≥ 480px — large phone ---- */
+  @media (min-width: 480px) {
+    :root { --gutter: 24px; }
+
+    .section { --section-pad: 72px; }
+    .journey { padding-block: 68px; }
+
+    /* enough width for the icons and normal padding again */
+    .phone-tabs .role-opt { font-size: 13.5px; padding: 9px 14px; }
+    .phone-tabs .role-opt .icon { display: block; }
+  }
+
+  /* ---- ≥ 640px — buttons return to intrinsic width ---- */
+  @media (min-width: 640px) {
+    .btn {
+      width: auto;
+      font-size: 17px;
+      min-height: 52px;
+      padding: 0 30px;
+    }
+
+    .btn-ghost { padding-inline: 26px 30px; }
+    .btn-sm { min-height: 49px; padding: 0 28px; font-size: 16px; }
+
+    /* the menu CTA should still fill its column */
+    .mobile-nav a.btn { width: 100%; }
+
+    /* Pills placed in pixels from the stage centre rather than in percentages of it.
+       The stage runs ~590px wide here, ~960px at 1023px, then back down to 460px in the
+       two-column desktop layout, while the pills are a fixed size (198/176/168/169/228
+       x 54). Percentages stretched the gaps without stretching the pills: the cluster
+       filled 26% of its own bounding box at 640px and 17% by 1023px — five cards adrift
+       in empty space — then overflowed the narrow column at exactly 1024px by 23px,
+       overlapping a neighbour. Fixed offsets hold one 440x400 arrangement, centred, at
+       every size from here up: the spacing cannot stretch and the cluster cannot outgrow
+       its box (tightest is the 460px column at 1024px, leaving 10px a side). Below 640px
+       the stage is smaller than the cluster, so the percentage placement above stays —
+       it is already dense there (53% at 390px). */
+    .fp-1 { left: calc(50% - 205px); top: calc(50% - 200px); }
+    .fp-2 { left: calc(50% + 44px);  top: calc(50% - 113px); }
+    .fp-3 { left: calc(50% - 220px); top: calc(50% - 27px); }
+    .fp-4 { left: calc(50% + 51px);  top: calc(50% + 60px); }
+    .fp-5 { left: calc(50% - 190px); top: calc(50% + 146px); }
+  }
+
+  /* ---- ≥ 768px — tablet ---- */
+  @media (min-width: 768px) {
+    :root {
+      --gutter: 32px;
+      --art-fade: 110px;
+    }
+
+    html { scroll-padding-top: 92px; }
+
+    .section { --section-pad: 80px; }
+    .journey { padding-block: 76px; }
+
+    .site-header { padding-block: 26px 0; }
+    .site-header.is-stuck { padding-block: 12px; }
+    .logo img { height: 40px; }
+
+    .hero { padding-block: 148px 72px; }
+    .hero-art { background-size: 150% auto; background-position: 74% 78%; }
+
+    .icon-tile { width: 48px; height: 48px; border-radius: var(--r-sm); }
+    .icon-tile .icon { width: 22px; height: 22px; }
+    .icon-tile-lg { width: 62px; height: 62px; border-radius: var(--r-md); }
+    .icon-tile-lg .icon { width: 28px; height: 28px; }
+    .icon-orb { width: 76px; height: 76px; }
+    .icon-lg { width: 28px; height: 28px; }
+
+    .journey-stage { aspect-ratio: 1 / 0.62; }
+
+
+    /* photo + cards leave the stack and take their designed positions */
+    .problem-stage { aspect-ratio: 1 / 0.82; }
+    .problem-thread { display: block; }
+
+    .problem-photo {
+      position: absolute;
+      left: 23%;
+      top: 6.5%;
+      width: 46%;
+      max-width: none;
+      margin-inline: 0;
+      aspect-ratio: 348 / 490;
+      border-radius: var(--r-xs);
+    }
+
+    .float-card { position: absolute; }
+    .fc-1 { left: -1%;   top: 0;     width: 33%; }
+    .fc-2 { left: 68.4%; top: 9%;    width: 30%; }
+    .fc-3 { left: -2.5%; top: 42.6%; width: 29%; }
+    .fc-4 { left: 70.7%; top: 70%;   width: 27%; }
+    .fc-5 { left: 0.3%;  top: 77.6%; width: 28%; }
+
+    .problem-list::before { left: 31px; top: 54px; bottom: 54px; }
+    .problem-item { gap: 24px; }
+    .problem-item h3 { font-size: 21px; }
+    .problem-item p { font-size: 16px; }
+
+    .steps-panel { padding: 48px 28px 44px; border-radius: var(--r-2xl); }
+    .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 24px; }
+    .step { flex-direction: column; align-items: center; gap: 0; text-align: center; }
+    .step-num { font-size: 20px; margin: 22px 0 14px; }
+    .step-card { padding: 18px 12px 20px; }
+
+    .cta-card { padding: 48px 34px 52px; border-radius: var(--r-2xl); }
+
+    .feature-card { padding: 34px 26px 30px; border-radius: var(--r-xl); }
+    .feature-card__num { font-size: 38px; margin-bottom: 26px; }
+
+    .site-footer { padding-block: 56px 40px; }
+    .site-footer .logo-mark { height: 54px; }
+  }
+
+  /* ---- ≥ 1024px — desktop nav and side-by-side sections ---- */
+  @media (min-width: 1024px) {
+    html { scroll-padding-top: 108px; }
+
+    /* ---- app showcase: flanking cards ----
+       .section sets overflow:hidden, which makes it a scroll container and stops
+       position:sticky from ever pinning to the viewport. This section has no
+       section-art to clip, so visible is safe here. */
+    .app-showcase { overflow: visible; }
+
+
+
+    .section { --section-pad: 96px; }
+    .journey { padding-block: 104px; }
+
+    .nav-desktop { display: flex; }
+    .header-cta { display: inline-flex; }
+    .nav-toggle { display: none; }
+    .mobile-nav { display: none; }
+
+    .site-header { padding-block: 32px 0; }
+
+    .hero {
+      min-height: 880px;
+      align-items: center;
+      padding-block: 132px 80px;
+    }
+
+    .hero-art { background-size: 132% auto; background-position: 76% 62%; }
+
+    .hero-wash {
+      background: radial-gradient(72% 90% at 8% 46%, rgba(243, 244, 253, 0.94) 0%, rgba(243, 244, 253, 0.72) 34%, rgba(243, 244, 253, 0) 66%),
+        radial-gradient(90% 60% at 50% 100%, rgba(198, 183, 255, 0.10), transparent 70%);
+    }
+
+    .hero-copy { max-width: 600px; }
+
+    /* the stage sits beside the copy again, so the section art carries the tooth */
+    .journey-art {
+      background-image: url('brand%20assets/journey-tooth-aura.png');
+      background-position: 26% center;
+      background-color: #e8ebfb;
+    }
+    /* Size the section to the artwork's own frame so `cover` crops nothing. The source
+       is 1448x1086 — exactly 4:3 — so a full-bleed section 0.75x as tall as the viewport
+       is wide shows the whole image, edge to edge, at every desktop width. Capped at
+       1200px so ultra-wide viewports don't get an absurdly tall section; past ~1600px
+       a little top/bottom crop comes back, which is the right trade at that size. */
+    .journey { min-height: min(75vw, 1200px); }
+
+    .journey-stage { aspect-ratio: auto; min-height: 673px; }
+
+    /* Hand the section back to the tooth artwork. background-image: none is what keeps
+       the portrait file off desktop loads; opacity carries the cross-fade on resize. */
+    .journey-art::before {
+      background-image: none;
+      opacity: 0;
+    }
+
+    /* ---- #features → #for-patients: one continuous gradient ----
+       Both arts fade out at this seam, which on its own left ~300px of flat
+       --surface-page between them — two rich backgrounds with a washed-out gap in the
+       middle. Butt-joining them instead does not work: their palettes track together on
+       average but diverge by up to 15 RGB units at a given x, so the join shows as a
+       broken line across the width.
+       So: keep the fades (nothing can cut, at any width) and put a bridge behind both
+       arts carrying the colour the gap was missing. Each half ramps its alpha toward
+       the seam and they share one horizontal colour profile — sampled from the arts
+       themselves along the join — so the two halves meet at identical colour across the
+       full width, and each dissolves into its own artwork going away from it.
+       z-index -2 keeps it behind the art (-1) but still above the section background. */
+    #features::after,
+    .journey::before {
+      --bridge-colours: linear-gradient(to right,
+          #eff0fa 0%,
+          #e8ecfa 4%,
+          #d5dffa 8%,
+          #c9d6fb 14%,
+          #cfd7fa 28%,
+          #d4d8fa 49%,
+          #dbdcfa 69%,
+          #deddfa 87%,
+          #e9eafa 94%,
+          #eff0fa 100%);
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 340px;
+      z-index: -2;
+      pointer-events: none;
+      background: var(--bridge-colours);
+    }
+
+    #features::after {
+      bottom: 0;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, 0.35) 55%, #000 100%);
+      mask-image: linear-gradient(to bottom, transparent 0, rgba(0, 0, 0, 0.35) 55%, #000 100%);
+    }
+
+    .journey::before {
+      top: 0;
+      -webkit-mask-image: linear-gradient(to top, transparent 0, rgba(0, 0, 0, 0.35) 55%, #000 100%);
+      mask-image: linear-gradient(to top, transparent 0, rgba(0, 0, 0, 0.35) 55%, #000 100%);
+    }
+
+    .problem-stage { aspect-ratio: auto; min-height: 620px; }
+    .problem-photo { left: 21%; width: 55%; }
+
+    .steps-grid { grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .steps-grid::before { display: block; }
+
+    .cta-card { padding: 56px 40px 60px; }
+  }
+
+  /* ---- ≥ 1280px — full reference-scale layout ---- */
+  @media (min-width: 1280px) {
+    .phone-media { width: min(380px, 100%); }
+
+    /* ---- reference layout: copy left, phone right, cards flanking ----
+       Gated to 1280 deliberately. At 1024 the right column leaves ~88px clear beside
+       the phone, so cards would have to sit almost entirely on top of it to avoid
+       pushing the page sideways; below this width they stack under the phone instead. */
+    .phone-stage {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+      align-items: center;
+      gap: var(--s-10);
+      text-align: left;
+      /* pins while the scroll runway passes, so the tabs can be scroll-driven */
+      position: sticky;
+      top: clamp(76px, 11vh, 118px);
+    }
+
+    .showcase-scroll { height: 320vh; }
+
+    .app-showcase-head { max-width: none; margin-inline: 0; text-align: left; }
+    .phone-tabs { justify-content: flex-start; }
+
+    .phone-notes[data-active='true'] {
+      display: block;
+      margin: 0;
+      width: auto;
+    }
+
+    .phone-note {
+      position: absolute;
+      width: 230px;
+      /* above the mockup: the img comes later in the DOM and would otherwise cover them */
+      z-index: 2;
+    }
+
+    /* z-index only — position stays as the base rules set it, so the alternate shots
+       keep the absolute placement that stacks them on the booking one */
+    .phone-shot { z-index: 1; }
+
+    /* a modest overlap onto the phone, as in the reference — enough to interlock,
+       not enough to bury the label */
+    .phone-note[data-side='left'] { right: calc(100% - 90px); }
+    .phone-note[data-side='right'] { left: calc(100% - 90px); }
+    /* the dimmed pair is narrower as well as further out, which is what keeps the
+       widest case inside the viewport at exactly 1280 */
+    .phone-note[data-depth='far'] { width: 210px; }
+    .phone-note[data-depth='far'][data-side='left'] { right: calc(100% - 78px); }
+    .phone-note[data-depth='far'][data-side='right'] { left: calc(100% - 78px); }
+
+    .phone-note[data-slot='1'] { top: 10%; }
+    .phone-note[data-slot='2'] { top: 27%; }
+    .phone-note[data-slot='3'] { top: 56%; }
+    .phone-note[data-slot='4'] { top: 73%; }
+
+    :root { --gutter: 24px; }
+
+    .site-header { padding-block: 44px 0; }
+
+    .hero { min-height: 1024px; padding-block: 150px 64px; }
+    .hero-art { background-size: 116% auto; background-position: right -40px center; }
+
+    .steps-panel { padding: 48px 22px 44px; }
+    .steps-grid { gap: 40px; }
+
+    .cta-card { padding: 48px 56px 38px; }
+    .cta-copy { max-width: 620px; }
+
+    .feature-card { padding: 40px 32px 36px; }
+  }
+
+  /* ============================================================
+     REDUCED MOTION
+     ============================================================ */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+    .progress-fill { transform: scaleX(1); }
+  }
+</style>
+
+<!-- ============================================================
+     ICON SPRITE — minimal rounded line icons (stroke 2, radius 8)
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="4"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-plan" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1.5"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></symbol>
+    <symbol id="i-pill" viewBox="0 0 24 24"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 4.9A2 2 0 0 0 7.93 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M11.5 2.8a.55.55 0 0 1 1 0l2.3 4.68a2.1 2.1 0 0 0 1.6 1.16l5.16.75a.53.53 0 0 1 .3.9l-3.74 3.64a2.12 2.12 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.12 2.12 0 0 0-1.97 0L6.4 21.5a.53.53 0 0 1-.77-.56l.88-5.14a2.12 2.12 0 0 0-.61-1.88L2.16 10.3a.53.53 0 0 1 .3-.91l5.16-.75a2.12 2.12 0 0 0 1.6-1.16z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M2 9.5a5.5 5.5 0 0 1 9.59-3.68.56.56 0 0 0 .82 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.49 5.31a2 2 0 0 1-3 0L5 15c-1.5-1.5-3-3.2-3-5.5"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></symbol>
+    <symbol id="i-trending" viewBox="0 0 24 24"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><path d="M21.8 10A10 10 0 1 1 17 3.34"/><path d="m9 11 3 3L22 4"/></symbol>
+    <symbol id="i-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8M16 13H8M16 17H8"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9M13 17V5M8 17v-3"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.29 1.29L3 12l5.81 1.9a2 2 0 0 1 1.29 1.29L12 21l1.9-5.81a2 2 0 0 1 1.29-1.29L21 12l-5.81-1.9a2 2 0 0 1-1.29-1.29Z"/><path d="M5 3v4M19 17v4M3 5h4M17 19h4"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></symbol>
+    <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+    <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="site-header" id="site-header">
+  <div class="shell flex items-center justify-between gap-6">
+    <a href="#home" class="logo shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50" aria-label="Dentlora — home">
+      <img src="brand%20assets/dentlora-wordmark.png" alt="Dentlora" width="294" height="56" />
+    </a>
+
+    <nav class="nav-desktop items-center gap-8" aria-label="Primary">
+      <a href="#home" class="nav-link is-active">Home</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#for-patients" class="nav-link">For Patients</a>
+      <a href="#about" class="nav-link">About Us</a>
+      <a href="#how-it-works" class="nav-link">How It Works</a>
+    </nav>
+
+    <a href="#for-patients" class="header-cta btn btn-primary btn-sm shrink-0">
+      Find a Dentist
+      <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+    </a>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+      <svg class="icon" id="nav-toggle-icon" aria-hidden="true"><use href="#i-menu" /></svg>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+  <a href="#home">Home</a>
+  <a href="#features">Features</a>
+  <a href="#for-patients">For Patients</a>
+  <a href="#about">About Us</a>
+  <a href="#how-it-works">How It Works</a>
+  <a href="#contact">Contact</a>
+  <a href="#for-patients" class="btn btn-primary mt-7 !border-transparent">
+    Find a Dentist
+    <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+  </a>
+</div>
+
+<main>
+  <!-- ==========================================================
+       HERO
+       ========================================================== -->
+  <section class="hero" id="home">
+    <div class="hero-art" role="img" aria-label="Translucent glass tooth with soft light ribbons"></div>
+    <div class="hero-wash"></div>
+
+    <div class="shell">
+      <div class="hero-copy">
+        <span class="pill pill-hero reveal">
+          <span class="pill-dot"></span>
+          All your dental care in one place
+        </span>
+
+        <div class="role-toggle mt-[22px] reveal" id="hero-role-toggle" role="tablist"
+             aria-label="Choose your role" style="transition-delay:40ms">
+          <button type="button" class="btn btn-primary role-opt" id="role-tab-patients" role="tab"
+                  aria-selected="true" aria-controls="hero-role-panel" tabindex="0"
+                  data-role="patients">For patients</button>
+          <button type="button" class="btn btn-ghost role-opt" id="role-tab-clinics" role="tab"
+                  aria-selected="false" aria-controls="hero-role-panel" tabindex="-1"
+                  data-role="clinics">For doctors &amp; clinics</button>
+        </div>
+
+        <div class="hero-variant" id="hero-role-panel" role="tabpanel"
+             aria-labelledby="role-tab-patients">
+          <h1 class="t-display mt-[33px] reveal" id="hero-headline" style="transition-delay:60ms">
+            Care for<br />
+            your smile.<br />
+            <span class="accent">Confidently.</span>
+          </h1>
+
+          <p class="t-lead mt-[21px] max-w-[522px] reveal" id="hero-sub" style="transition-delay:120ms">
+            Find trusted dentists, book appointments, follow your treatment plan, and keep all your
+            dental records organized.
+          </p>
+
+          <div class="mt-[44px] flex flex-wrap items-center gap-4 reveal" style="transition-delay:180ms">
+            <a href="#for-patients" class="btn btn-primary" id="hero-cta-primary">
+              <span class="btn-label">Find a Dentist</span>
+              <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+            </a>
+            <a href="#how-it-works" class="btn btn-ghost" id="hero-cta-secondary">
+              <span class="btn-play"><svg class="icon icon-xs" aria-hidden="true"><use href="#i-play" /></svg></span>
+              <span class="btn-label">How Dentlora Works</span>
+            </a>
+          </div>
+        </div>
+
+        <dl class="mt-[45px] flex flex-wrap gap-x-[31px] gap-y-6 reveal" style="transition-delay:240ms">
+          <div class="trust-item">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-shield" /></svg></span>
+            <div>
+              <dt>Secure &amp; Private</dt>
+              <dd>Your data is protected</dd>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-star" /></svg></span>
+            <div>
+              <dt>Trusted Professionals</dt>
+              <dd>Verified dentists &amp; clinics</dd>
+            </div>
+          </div>
+          <div class="trust-item">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-heart" /></svg></span>
+            <div>
+              <dt>Personalized Care</dt>
+              <dd>Tailored to your needs</dd>
+            </div>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       PATIENT APP SHOWCASE — shown only while the hero role is "patients"
+       ========================================================== -->
+  <section class="section app-showcase" id="patient-app" aria-labelledby="app-showcase-title">
+    <div class="shell">
+      <!-- Scroll runway: only tall at >=1024px, where the stage pins inside it and
+           scroll position drives the active tab. Below that it collapses to auto and
+           the section behaves as a plain click-driven block. -->
+      <div class="showcase-scroll">
+      <div class="phone-stage reveal" style="transition-delay:180ms">
+        <div class="app-showcase-head">
+          <span class="pill pill-tag">
+            <svg class="icon icon-xs" aria-hidden="true"><use href="#i-sparkles" /></svg>
+            Patient app
+          </span>
+
+          <h2 class="t-h2 mt-7" id="app-showcase-title">
+            Dentlora, right in <span class="accent">your pocket.</span>
+          </h2>
+
+          <p class="t-sub mt-6">
+            Book appointments, track your treatment, and view your prescriptions — anytime,
+            anywhere.
+          </p>
+
+          <div class="role-toggle phone-tabs mt-10" id="app-tabs" role="tablist"
+               aria-label="Patient app screens">
+            <button type="button" class="btn btn-primary role-opt" id="app-tab-book" role="tab"
+                    aria-selected="true" aria-controls="app-panel-book" tabindex="0">
+              <svg class="icon" aria-hidden="true"><use href="#i-calendar" /></svg>Book
+            </button>
+            <button type="button" class="btn btn-ghost role-opt" id="app-tab-track" role="tab"
+                    aria-selected="false" aria-controls="app-panel-track" tabindex="-1">
+              <svg class="icon" aria-hidden="true"><use href="#i-chart" /></svg>Track
+            </button>
+            <button type="button" class="btn btn-ghost role-opt" id="app-tab-records" role="tab"
+                    aria-selected="false" aria-controls="app-panel-records" tabindex="-1">
+              <svg class="icon" aria-hidden="true"><use href="#i-file" /></svg>Records
+            </button>
+            <button type="button" class="btn btn-ghost role-opt" id="app-tab-download" role="tab"
+                    aria-selected="false" aria-controls="app-panel-download" tabindex="-1">
+              <svg class="icon" aria-hidden="true"><use href="#i-download" /></svg>Download
+            </button>
+          </div>
+        </div>
+
+        <div class="phone-media">
+        <!-- Flanking notification cards. Outside .phone-frame because .phone-screen
+             clips to the bezel; kept in sync with the tabs by data-active. -->
+        <dl class="phone-notes" data-notes-for="book" id="app-panel-book" role="tabpanel" aria-labelledby="app-tab-book" data-active="true">
+          <div class="phone-note" data-side="left" data-slot="1">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-check-circle" /></svg></span>
+            <div><dt>Appointment confirmed</dt><dd>Dr. Ahmed — Tue, 10:30 AM</dd></div>
+          </div>
+          <div class="phone-note" data-side="right" data-slot="2">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-globe" /></svg></span>
+            <div><dt>3 clinics near you</dt><dd>Closest is 2.4 km away</dd></div>
+          </div>
+          <div class="phone-note" data-side="left" data-slot="3" data-depth="far">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-bell" /></svg></span>
+            <div><dt>Reminder set</dt><dd>We'll nudge you a day before</dd></div>
+          </div>
+          <div class="phone-note" data-side="right" data-slot="4" data-depth="far">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-star" /></svg></span>
+            <div><dt>Verified dentist</dt><dd>4.9 from 210 patients</dd></div>
+          </div>
+        </dl>
+
+        <dl class="phone-notes" data-notes-for="track" id="app-panel-track" role="tabpanel" aria-labelledby="app-tab-track" data-active="false">
+          <div class="phone-note" data-side="left" data-slot="1">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-activity" /></svg></span>
+            <div><dt>Session 3 of 5 complete</dt><dd>Treatment 75% done</dd></div>
+          </div>
+          <div class="phone-note" data-side="right" data-slot="2">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-calendar" /></svg></span>
+            <div><dt>Next visit in 12 days</dt><dd>Mar 24 — 4:00 PM</dd></div>
+          </div>
+          <div class="phone-note" data-side="left" data-slot="3" data-depth="far">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-trending" /></svg></span>
+            <div><dt>On track</dt><dd>2 days ahead of plan</dd></div>
+          </div>
+          <div class="phone-note" data-side="right" data-slot="4" data-depth="far">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-pill" /></svg></span>
+            <div><dt>Aligner change due</dt><dd>Switch to tray 8 tonight</dd></div>
+          </div>
+        </dl>
+
+        <dl class="phone-notes" data-notes-for="records" id="app-panel-records" role="tabpanel" aria-labelledby="app-tab-records" data-active="false">
+          <div class="phone-note" data-side="left" data-slot="1">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-file" /></svg></span>
+            <div><dt>X-ray uploaded</dt><dd>Panoramic — 12 Mar</dd></div>
+          </div>
+          <div class="phone-note" data-side="right" data-slot="2">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-pill" /></svg></span>
+            <div><dt>Prescription ready</dt><dd>Amoxicillin 500mg — PDF</dd></div>
+          </div>
+          <div class="phone-note" data-side="left" data-slot="3" data-depth="far">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-folder" /></svg></span>
+            <div><dt>12 documents stored</dt><dd>All in one place</dd></div>
+          </div>
+          <div class="phone-note" data-side="right" data-slot="4" data-depth="far">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-shield" /></svg></span>
+            <div><dt>Shared securely</dt><dd>Visible to Dr. Ahmed only</dd></div>
+          </div>
+        </dl>
+
+        <dl class="phone-notes" data-notes-for="download" id="app-panel-download" role="tabpanel"
+            aria-labelledby="app-tab-download" data-active="false">
+          <div class="phone-note phone-note-cta" data-side="left" data-slot="1">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-download" /></svg></span>
+            <div><dt>App Store</dt><dd>iPhone &amp; iPad</dd></div>
+          </div>
+          <div class="phone-note phone-note-cta" data-side="right" data-slot="2">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-download" /></svg></span>
+            <div><dt>Google Play</dt><dd>Android 9 and up</dd></div>
+          </div>
+        </dl>
+
+        <img class="phone-shot" src="brand%20assets/book-phone.png" width="900" height="1126"
+             loading="lazy" decoding="async"
+             alt="A hand holding a phone showing the Dentlora patient app booking screen" />
+
+        <!-- Alternate mockups, cross-faded over the booking one by the tabs. Decorative:
+             the tab's own cards carry what the screen says. Named for the screen they
+             show, which is why 'records' is served by the medical portfolio shot. -->
+        <img class="phone-shot phone-shot-alt" data-shot-for="track" data-active="false"
+             src="brand%20assets/track-phone.png" width="900" height="1126"
+             loading="lazy" decoding="async" alt="" />
+
+        <img class="phone-shot phone-shot-alt" data-shot-for="records" data-active="false"
+             src="brand%20assets/medical-phone.png" width="900" height="1126"
+             loading="lazy" decoding="async" alt="" />
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       POWERFUL FEATURES
+       ========================================================== -->
+  <section class="section" id="features">
+    <div class="section-art features-art feathered-art"></div>
+
+    <div class="shell-wide">
+      <div class="text-center">
+        <span class="pill pill-tag reveal">Features</span>
+
+        <h2 class="t-h2-center mt-7 reveal" style="transition-delay:60ms">
+          <span data-for="patients">Designed around<br /><span class="accent">your dental journey.</span></span>
+          <span data-for="clinics">Designed around<br /><span class="accent">your day-to-day practice.</span></span>
+        </h2>
+
+        <p class="t-sub mt-6 mx-auto max-w-[600px] reveal" style="transition-delay:120ms">
+          <span data-for="patients">From your first visit to your last follow-up — everything stays connected.</span>
+          <span data-for="clinics">From the first session to the last follow-up — everything stays in one workspace.</span>
+        </p>
+      </div>
+
+      <div class="mt-[76px] grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- 01 -->
+        <article class="feature-card reveal">
+          <p class="feature-card__num">01</p>
+          <h3 class="t-card-title"><span data-for="patients">Treatment Plans</span><span data-for="clinics">Session &amp; Notes</span></h3>
+          <p class="feature-card__body"><span data-for="patients">Personalized plans designed by your dentist, tailored to your needs.</span><span data-for="clinics">Document every session and connect it instantly to a prescription or treatment plan.</span></p>
+
+          <div class="mock">
+            <div class="flex items-baseline justify-between gap-3">
+              <span class="text-[14.5px] font-medium text-navy">Orthodontic Braces</span>
+              <span class="text-[13.5px] font-semibold text-brand">75%</span>
+            </div>
+
+            <div class="progress-track mt-3.5">
+              <div class="progress-fill" style="width:75%"></div>
+            </div>
+
+            <ul class="mt-5 flex flex-col gap-3">
+              <li class="mock-row">
+                <svg class="icon icon-sm text-brand" aria-hidden="true"><use href="#i-check-circle" /></svg>
+                Initial Consultation — Completed
+              </li>
+              <li class="mock-row">
+                <svg class="icon icon-sm text-brand" aria-hidden="true"><use href="#i-check-circle" /></svg>
+                Braces Installation — Completed
+              </li>
+              <li class="mock-row">
+                <svg class="icon icon-sm" style="color:#F0A93B" aria-hidden="true"><use href="#i-activity" /></svg>
+                Adjustment — In Progress
+              </li>
+              <li class="mock-row" style="color:var(--ink-faint)">
+                <svg class="icon icon-sm" style="color:#C3CCDB" aria-hidden="true"><use href="#i-circle" /></svg>
+                Retainer Phase — Pending
+              </li>
+            </ul>
+
+            <span class="mock-badge"><svg class="icon icon-xs" aria-hidden="true"><use href="#i-chart" /></svg></span>
+          </div>
+        </article>
+
+        <!-- 02 -->
+        <article class="feature-card reveal" style="transition-delay:80ms">
+          <p class="feature-card__num">02</p>
+          <h3 class="t-card-title"><span data-for="patients">Session Tracking</span><span data-for="clinics">Practice Overview</span></h3>
+          <p class="feature-card__body"><span data-for="patients">Track every visit, procedure, and progress in one beautiful timeline.</span><span data-for="clinics">Track appointments, payment confirmations, and schedules from one dashboard.</span></p>
+
+          <div class="mock">
+            <ol class="flex flex-col gap-5">
+              <li class="timeline-item is-current">
+                <p class="text-[12.5px] font-medium text-brand">May 12, 2025</p>
+                <p class="text-[14.5px] font-medium text-navy mt-0.5">Teeth Cleaning</p>
+              </li>
+              <li class="timeline-item">
+                <p class="text-[12.5px] text-faint">Apr 16, 2025</p>
+                <p class="text-[14.5px] font-medium text-navy mt-0.5">Filling</p>
+              </li>
+              <li class="timeline-item">
+                <p class="text-[12.5px] text-faint">Mar 10, 2025</p>
+                <p class="text-[14.5px] font-medium text-navy mt-0.5">Consultation</p>
+              </li>
+            </ol>
+
+            <span class="mock-badge"><svg class="icon icon-xs" aria-hidden="true"><use href="#i-activity" /></svg></span>
+          </div>
+        </article>
+
+        <!-- 03 -->
+        <article class="feature-card reveal" style="transition-delay:160ms">
+          <p class="feature-card__num">03</p>
+          <h3 class="t-card-title"><span data-for="patients">Medical Portfolio</span><span data-for="clinics">Patient Records, Simplified</span></h3>
+          <p class="feature-card__body"><span data-for="patients">All your records, prescriptions, and reports securely stored and easily accessible.</span><span data-for="clinics">Access complete, read-only patient history — securely, whenever you need it.</span></p>
+
+          <div class="mock">
+            <ul class="flex flex-col gap-3">
+              <li class="mock-file">
+                <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-file" /></svg></span>
+                <span class="text-[14.5px] font-medium text-navy flex-1">X-ray Report</span>
+                <span class="text-[12px] font-semibold tracking-wider text-faint">PDF</span>
+              </li>
+              <li class="mock-file">
+                <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-plan" /></svg></span>
+                <span class="text-[14.5px] font-medium text-navy flex-1">Prescription</span>
+                <span class="text-[12px] font-semibold tracking-wider text-faint">PDF</span>
+              </li>
+              <li class="mock-file">
+                <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-file" /></svg></span>
+                <span class="text-[14.5px] font-medium text-navy flex-1">Treatment Plan</span>
+                <span class="text-[12px] font-semibold tracking-wider text-faint">PDF</span>
+              </li>
+            </ul>
+
+            <span class="mock-badge"><svg class="icon icon-xs" aria-hidden="true"><use href="#i-shield" /></svg></span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       ALL-IN-ONE CARE EXPERIENCE
+       ========================================================== -->
+  <section class="journey" id="for-patients">
+    <div class="journey-art feathered-art" role="img" aria-label="Pearl-white tooth surrounded by glowing orbital light rings"></div>
+
+    <div class="shell-wide">
+      <div class="grid lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-10 items-center">
+        <!-- Floating capability pills over the tooth artwork -->
+        <div class="journey-stage" aria-hidden="true">
+          <span class="float-pill fp-1">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-calendar" /></svg></span>
+            <span data-for="patients">Book Appointments</span><span data-for="clinics">Manage Sessions</span>
+          </span>
+          <span class="float-pill fp-2">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-plan" /></svg></span>
+            <span data-for="patients">Treatment Plans</span><span data-for="clinics">Treatment Plans</span>
+          </span>
+          <span class="float-pill fp-3">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-trending" /></svg></span>
+            <span data-for="patients">Track Progress</span><span data-for="clinics">Prescriptions</span>
+          </span>
+          <span class="float-pill fp-4">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-bell" /></svg></span>
+            <span data-for="patients">Follow-up Care</span><span data-for="clinics">Follow-Up Decisions</span>
+          </span>
+          <span class="float-pill fp-5">
+            <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-folder" /></svg></span>
+            <span data-for="patients">All Records in One Place</span><span data-for="clinics">Patient Records</span>
+          </span>
+        </div>
+
+        <div>
+          <span class="pill pill-tag reveal">
+            <svg class="icon icon-xs" aria-hidden="true"><use href="#i-zap" /></svg>
+            <span data-for="patients">All-in-one care experience</span><span data-for="clinics">One connected workflow</span>
+          </span>
+
+          <h2 class="t-h2 mt-6 reveal" style="transition-delay:60ms">
+            <span data-for="patients">One journey.<br />Every step, <span class="accent">connected.</span></span>
+            <span data-for="clinics">One workflow.<br />Every step, <span class="accent">connected.</span></span>
+          </h2>
+
+          <p class="t-sub mt-6 max-w-[625px] reveal" style="transition-delay:120ms">
+            <span data-for="patients">Dentlora brings every part of your dental care together — so you can focus on what
+            matters most: your health and your smile.</span>
+            <span data-for="clinics">Every session, plan and follow-up in one workspace — so your team can focus on
+            care instead of chasing paperwork.</span>
+          </p>
+
+          <div class="mt-8 grid sm:grid-cols-2 gap-x-8 gap-y-7 reveal" style="transition-delay:180ms">
+            <div class="feature-row">
+              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-calendar" /></svg></span>
+              <div>
+                <h3><span data-for="patients">Book Appointments</span><span data-for="clinics">Manage Sessions</span></h3>
+                <p><span data-for="patients">Find and book appointments with trusted dentists.</span><span data-for="clinics">View, confirm and document each session as your day runs.</span></p>
+              </div>
+            </div>
+            <div class="feature-row">
+              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-plan" /></svg></span>
+              <div>
+                <h3><span data-for="patients">Treatment Plans</span><span data-for="clinics">Treatment Plans</span></h3>
+                <p><span data-for="patients">View your personalized plans and track each step.</span><span data-for="clinics">Build and update plans, and share each step with the patient.</span></p>
+              </div>
+            </div>
+            <div class="feature-row">
+              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-trending" /></svg></span>
+              <div>
+                <h3><span data-for="patients">Track Progress</span><span data-for="clinics">Prescriptions</span></h3>
+                <p><span data-for="patients">Monitor your treatment journey in real time.</span><span data-for="clinics">Issue prescriptions and attach them to the right session.</span></p>
+              </div>
+            </div>
+            <div class="feature-row">
+              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-pill" /></svg></span>
+              <div>
+                <h3><span data-for="patients">Prescriptions</span><span data-for="clinics">Follow-Up Decisions</span></h3>
+                <p><span data-for="patients">Access prescriptions and medications anytime.</span><span data-for="clinics">Decide on follow-ups and schedule them in the same flow.</span></p>
+              </div>
+            </div>
+            <div class="feature-row">
+              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-folder" /></svg></span>
+              <div>
+                <h3><span data-for="patients">All Records in One Place</span><span data-for="clinics">Patient Records</span></h3>
+                <p><span data-for="patients">Your X-rays, reports, and documents — always secure.</span><span data-for="clinics">Complete, read-only patient history whenever you need it.</span></p>
+              </div>
+            </div>
+            <div class="feature-row">
+              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href="#i-bell" /></svg></span>
+              <div>
+                <h3><span data-for="patients">Follow-up Care</span><span data-for="clinics">Templates</span></h3>
+                <p><span data-for="patients">Get reminders and stay on top of your follow-ups.</span><span data-for="clinics">Reuse your common notes and plans instead of retyping them.</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       THE PROBLEM
+       ========================================================== -->
+  <section class="section" id="about">
+    <div class="section-art problem-art"></div>
+
+    <div class="shell-wide">
+      <div class="grid lg:grid-cols-2 gap-16 lg:gap-12 items-center">
+        <div class="problem-stage problem-stage--mobile flex flex-col gap-4 md:block">
+          <span class="problem-thread" aria-hidden="true"></span>
+
+          <div class="problem-photo">
+            <img src="brand%20assets/clinic-photo.png" alt="A dentist in full protective gear carefully treating a patient" loading="lazy" />
+          </div>
+
+          <div class="float-card fc-1">
+            <div class="flex items-center gap-2">
+              <svg class="icon icon-xs text-brand" aria-hidden="true"><use href="#i-calendar" /></svg>
+              <h4>Appointment Reminder</h4>
+            </div>
+            <p class="mt-2.5"><span class="text-navy font-medium">May 22, 2026</span> &nbsp;10:30 AM</p>
+            <p class="mt-1">Upcoming visit with Dr. Ahmed</p>
+          </div>
+
+          <div class="float-card fc-2">
+            <div class="flex items-center gap-2">
+              <svg class="icon icon-xs text-brand" aria-hidden="true"><use href="#i-pill" /></svg>
+              <h4>Prescription Ready</h4>
+            </div>
+            <p class="mt-2.5">Antibiotic Gel</p>
+            <span class="chip mt-2.5">
+              <svg class="icon icon-xs" aria-hidden="true"><use href="#i-file" /></svg>
+              PDF
+            </span>
+          </div>
+
+          <div class="float-card fc-3">
+            <div class="flex items-center gap-2">
+              <svg class="icon icon-xs text-brand" aria-hidden="true"><use href="#i-plan" /></svg>
+              <h4>Treatment Plan</h4>
+            </div>
+            <p class="mt-2.5">Step 2 of 4</p>
+            <span class="chip mt-2.5">In Progress</span>
+          </div>
+
+          <div class="float-card fc-4">
+            <div class="flex items-center gap-2">
+              <svg class="icon icon-xs text-brand" aria-hidden="true"><use href="#i-folder" /></svg>
+              <h4>Patient Record</h4>
+            </div>
+            <div class="flex items-center gap-2 mt-2.5">
+              <svg class="icon icon-xs text-brand" aria-hidden="true"><use href="#i-file" /></svg>
+              <div>
+                <p class="!text-navy">X-ray uploaded</p>
+                <p class="!text-[11.5px]">May 2026</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="float-card fc-5">
+            <div class="flex items-center gap-2">
+              <svg class="icon icon-xs text-brand" aria-hidden="true"><use href="#i-bell" /></svg>
+              <h4>Follow-Up Needed</h4>
+            </div>
+            <p class="mt-2.5">Submit your symptoms</p>
+          </div>
+        </div>
+
+        <div>
+          <p class="t-overline reveal">The problem</p>
+
+          <h2 class="t-h2 mt-4 reveal" style="transition-delay:60ms">
+            Dental care shouldn't<br />
+            feel this <span class="accent">scattered.</span>
+          </h2>
+
+          <p class="t-sub mt-6 max-w-[610px] reveal" style="transition-delay:120ms">
+            A missed reminder. A lost prescription. A treatment plan you can't quite remember.
+            Dental care often lives in too many places at once — and patients are the ones left
+            piecing it together.
+          </p>
+
+          <hr class="mt-9 border-0 h-px" style="background:var(--hairline)" />
+
+          <div class="problem-list mt-9 flex flex-col gap-8 reveal" style="transition-delay:180ms">
+            <div class="problem-item">
+              <span class="icon-tile icon-tile-lg"><svg class="icon icon-lg" aria-hidden="true"><use href="#i-calendar" /></svg></span>
+              <div class="pt-1.5">
+                <h3>Missed Appointment Details</h3>
+                <p>Dates, times, and visit info are easy to lose track of.</p>
+              </div>
+            </div>
+            <div class="problem-item">
+              <span class="icon-tile icon-tile-lg"><svg class="icon icon-lg" aria-hidden="true"><use href="#i-pill" /></svg></span>
+              <div class="pt-1.5">
+                <h3>Lost Prescriptions</h3>
+                <p>Important prescription details aren't always easy to find later.</p>
+              </div>
+            </div>
+            <div class="problem-item">
+              <span class="icon-tile icon-tile-lg"><svg class="icon icon-lg" aria-hidden="true"><use href="#i-plan" /></svg></span>
+              <div class="pt-1.5">
+                <h3>Unclear Treatment Steps</h3>
+                <p>It's hard to remember what comes next in the plan.</p>
+              </div>
+            </div>
+            <div class="problem-item">
+              <span class="icon-tile icon-tile-lg"><svg class="icon icon-lg" aria-hidden="true"><use href="#i-folder" /></svg></span>
+              <div class="pt-1.5">
+                <h3>Scattered Records</h3>
+                <p>Reports, files, and notes often live in separate places.</p>
+              </div>
+            </div>
+            <div class="problem-item">
+              <span class="icon-tile icon-tile-lg"><svg class="icon icon-lg" aria-hidden="true"><use href="#i-bell" /></svg></span>
+              <div class="pt-1.5">
+                <h3>No Follow-Up Visibility</h3>
+                <p>Patients can struggle to see what follow-up is needed next.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       HOW IT WORKS
+       ========================================================== -->
+  <section class="section" id="how-it-works">
+    <div class="section-art steps-art"></div>
+
+    <div class="shell-wide">
+      <div class="text-center">
+        <span class="pill pill-tag reveal">
+          <svg class="icon icon-xs" aria-hidden="true"><use href="#i-sparkles" /></svg>
+          How it works
+        </span>
+
+        <h2 class="t-h2-center mt-7 reveal" style="transition-delay:60ms">
+          <span data-for="patients">From booking to follow-up,<br />in <span class="accent">five simple steps.</span></span>
+          <span data-for="clinics">From onboarding to follow-up,<br />in <span class="accent">five simple steps.</span></span>
+        </h2>
+
+        <p class="t-sub mt-6 mx-auto max-w-[520px] reveal" style="transition-delay:120ms">
+          <span data-for="patients">Dentlora keeps every part of your dental care in one clear, connected flow — from booking
+          to follow-up.</span>
+          <span data-for="clinics">Dentlora keeps your practice in one clear, connected flow — from setting up your
+          profile to tracking patient progress.</span>
+        </p>
+      </div>
+
+      <div class="steps-panel mt-[70px] reveal" style="transition-delay:160ms">
+        <ol class="steps-grid">
+          <li class="step">
+            <span class="icon-orb"><svg class="icon icon-lg" aria-hidden="true"><use href="#i-calendar" /></svg></span>
+            <div class="step-body">
+              <p class="step-num">01</p>
+              <div class="step-card">
+                <h3><span data-for="patients">Choose your country</span><span data-for="clinics">Set up your profile</span></h3>
+                <p><span data-for="patients">Find and book visits with trusted dentists in just a few taps.</span><span data-for="clinics">Join through your clinic and set your availability.</span></p>
+              </div>
+            </div>
+          </li>
+          <li class="step">
+            <span class="icon-orb"><svg class="icon icon-lg" aria-hidden="true"><use href="#i-plan" /></svg></span>
+            <div class="step-body">
+              <p class="step-num">02</p>
+              <div class="step-card">
+                <h3><span data-for="patients">Find the right dentist</span><span data-for="clinics">Manage your day</span></h3>
+                <p><span data-for="patients">Get a personalized plan tailored to your dental needs and goals.</span><span data-for="clinics">View and manage appointments in real time.</span></p>
+              </div>
+            </div>
+          </li>
+          <li class="step">
+            <span class="icon-orb"><svg class="icon icon-lg" aria-hidden="true"><use href="#i-activity" /></svg></span>
+            <div class="step-body">
+              <p class="step-num">03</p>
+              <div class="step-card">
+                <h3><span data-for="patients">Book your appointment</span><span data-for="clinics">Document each session</span></h3>
+                <p><span data-for="patients">Monitor your progress, upcoming visits, and updates in one place.</span><span data-for="clinics">Add notes, prescriptions, and treatment plans.</span></p>
+              </div>
+            </div>
+          </li>
+          <li class="step">
+            <span class="icon-orb"><svg class="icon icon-lg" aria-hidden="true"><use href="#i-pill" /></svg></span>
+            <div class="step-body">
+              <p class="step-num">04</p>
+              <div class="step-card">
+                <h3><span data-for="patients">Attend your session</span><span data-for="clinics">Decide on follow-ups</span></h3>
+                <p><span data-for="patients">Access and manage prescriptions and medication instructions anytime.</span><span data-for="clinics">Create follow-up sessions when they are needed.</span></p>
+              </div>
+            </div>
+          </li>
+          <li class="step">
+            <span class="icon-orb"><svg class="icon icon-lg" aria-hidden="true"><use href="#i-heart" /></svg></span>
+            <div class="step-body">
+              <p class="step-num">05</p>
+              <div class="step-card">
+                <h3><span data-for="patients">Track your care afterward</span><span data-for="clinics">Track patient progress</span></h3>
+                <p><span data-for="patients">Stay on top of reminders, follow-ups, and next steps after each visit.</span><span data-for="clinics">See the full care history in one place.</span></p>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- CTA banner -->
+      <div class="cta-card mt-10 reveal" id="contact">
+        <div class="cta-copy">
+          <h2 class="t-h3">
+            <span data-for="patients">Ready for <span class="accent">calmer dental care?</span></span>
+            <span data-for="clinics">Ready for a <span class="accent">calmer practice?</span></span>
+          </h2>
+
+          <p class="t-lead mt-7 max-w-[600px]">
+            <span data-for="patients">Find trusted dentists, book appointments, follow your treatment plan, and keep all your
+            dental records organized.</span>
+            <span data-for="clinics">Manage sessions, prescriptions, treatment plans, and follow-ups — all from one
+            connected workspace built for dental teams.</span>
+          </p>
+
+          <div class="mt-11 flex flex-wrap items-center gap-4">
+            <a href="#for-patients" class="btn btn-primary">
+              <span class="btn-label" data-for="patients">Find a Dentist</span>
+              <span class="btn-label" data-for="clinics">Book a Demo</span>
+              <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+            </a>
+            <a href="#how-it-works" class="btn btn-ghost">
+              <span class="btn-play"><svg class="icon icon-xs" aria-hidden="true"><use href="#i-play" /></svg></span>
+              <span class="btn-label" data-for="patients">How Dentlora Works</span>
+              <span class="btn-label" data-for="clinics">See How It Works</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="site-footer">
+  <div class="section-art footer-art"></div>
+
+  <div class="shell-wide">
+    <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-10">
+      <div class="max-w-[420px]">
+        <img src="brand%20assets/dentlora-wordmark.png" alt="Dentlora" width="294" height="56" class="logo-mark h-[54px] w-auto" />
+        <p class="t-overline mt-5" style="color:#63A2D5">Your smile, our care</p>
+        <p class="t-body mt-3">
+          Connected dental care for patients, doctors, and clinics — from booking to follow-up.
+        </p>
+
+        <a href="mailto:Support@dentlora.com" class="footer-email mt-6">
+          <span class="icon-circle"><svg class="icon icon-sm" aria-hidden="true"><use href="#i-mail" /></svg></span>
+          Support@dentlora.com
+        </a>
+      </div>
+
+      <div class="flex flex-col gap-8 lg:items-end">
+        <nav class="flex flex-wrap gap-x-9 gap-y-3 lg:pt-2" aria-label="Footer">
+          <a href="#home" class="footer-link">Home</a>
+          <a href="#features" class="footer-link">Features</a>
+          <a href="#how-it-works" class="footer-link">How It Works</a>
+          <a href="#contact" class="footer-link">Contact</a>
+        </nav>
+
+        <div class="flex flex-col gap-3.5 lg:items-end">
+          <p class="t-overline" style="color:#63A2D5">Follow us</p>
+
+          <!-- TODO: replace each href with the real Dentlora profile URL before going live -->
+          <ul class="social-row">
+            <li>
+              <a href="#" class="social-link" aria-label="Dentlora on Instagram" rel="noopener noreferrer">
+                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-instagram" /></svg>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="social-link" aria-label="Dentlora on LinkedIn" rel="noopener noreferrer">
+                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-linkedin" /></svg>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="social-link" aria-label="Dentlora on Facebook" rel="noopener noreferrer">
+                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-facebook" /></svg>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="social-link" aria-label="Dentlora on TikTok" rel="noopener noreferrer">
+                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-tiktok" /></svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <hr class="mt-11 border-0 h-px" style="background:var(--hairline)" />
+
+    <div class="mt-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+      <p class="text-[15px]" style="color:var(--ink-faint)">© 2026 Dentlora. All rights reserved.</p>
+
+      <div class="lang-switch">
+        <svg class="icon icon-sm" style="color:var(--brand)" aria-hidden="true"><use href="#i-globe" /></svg>
+        <button type="button" class="is-active">English</button>
+        <span aria-hidden="true">/</span>
+        <button type="button" lang="ar">العربية</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (() => {
+    'use strict';
+
+    /* ---- sticky header ---- */
+    const header = document.getElementById('site-header');
+    const onScroll = () => header.classList.toggle('is-stuck', window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    /* ---- mobile nav ---- */
+    const toggle = document.getElementById('nav-toggle');
+    const panel = document.getElementById('mobile-nav');
+    const toggleIcon = document.getElementById('nav-toggle-icon').querySelector('use');
+
+    const setMenu = (open) => {
+      panel.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      toggleIcon.setAttribute('href', open ? '#i-close' : '#i-menu');
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    toggle.addEventListener('click', () => setMenu(!panel.classList.contains('is-open')));
+    panel.addEventListener('click', (e) => { if (e.target.tagName === 'A') setMenu(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+
+    /* ---- tablist keyboard behaviour ----
+       Shared by the hero role toggle and the app-showcase tabs so both keep the same
+       pattern. Arrow keys move focus; Enter and Space select, which a native <button>
+       already does on its own. */
+    const bindTablistKeys = (container, tabs) => {
+      if (!container) return;
+      container.addEventListener('keydown', (e) => {
+        const i = tabs.indexOf(document.activeElement);
+        if (i < 0) return;
+        let next = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = tabs[(i + 1) % tabs.length];
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = tabs[(i - 1 + tabs.length) % tabs.length];
+        else if (e.key === 'Home') next = tabs[0];
+        else if (e.key === 'End') next = tabs[tabs.length - 1];
+        if (next) {
+          e.preventDefault();
+          next.focus();
+        }
+      });
+    };
+
+    /* ---- hero role toggle ----
+       Swaps the headline, sub and CTA labels. Everything else in the hero — badge,
+       trust bar, artwork — is outside #hero-role-panel and never changes. */
+    // Scoped to the hero on purpose: .role-opt is also worn by the app-showcase tabs
+    // (they reuse the same glass), and an unscoped query made a phone-tab click run
+    // selectRole() as well — which pre-set aria-selected and left the phone screen
+    // stuck on whichever panel was already showing.
+    const roleTabs = [...document.querySelectorAll('#hero-role-toggle .role-opt')];
+    const rolePanel = document.getElementById('hero-role-panel');
+
+    if (roleTabs.length && rolePanel) {
+      const heroCopy = {
+        patients: {
+          headline: 'Care for<br />your smile.<br /><span class="accent">Confidently.</span>',
+          sub: 'Find trusted dentists, book appointments, follow your treatment plan, and keep all your dental records organized.',
+          primary: 'Find a Dentist',
+          secondary: 'How Dentlora Works',
+        },
+        clinics: {
+          headline: 'Run your practice,<br />without <span class="accent">the chaos.</span>',
+          sub: 'Manage sessions, prescriptions, treatment plans, and follow-ups — all from one connected workspace built for dental teams.',
+          primary: 'Book a Demo',
+          secondary: 'See How It Works',
+        },
+      };
+
+      const heroEls = {
+        headline: document.getElementById('hero-headline'),
+        sub: document.getElementById('hero-sub'),
+        primary: document.querySelector('#hero-cta-primary .btn-label'),
+        secondary: document.querySelector('#hero-cta-secondary .btn-label'),
+      };
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      const applyCopy = (role) => {
+        const copy = heroCopy[role];
+        heroEls.headline.innerHTML = copy.headline;
+        heroEls.sub.textContent = copy.sub;
+        // label spans only, so each button keeps its icon
+        heroEls.primary.textContent = copy.primary;
+        heroEls.secondary.textContent = copy.secondary;
+      };
+
+      const selectRole = (tab) => {
+        if (tab.getAttribute('aria-selected') === 'true') return;
+        roleTabs.forEach((t) => {
+          const on = t === tab;
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+          t.tabIndex = on ? 0 : -1;
+          // the selected option wears the primary CTA glass, the other the ghost one
+          t.classList.toggle('btn-primary', on);
+          t.classList.toggle('btn-ghost', !on);
+        });
+        // Single source of truth for the chosen role. Anything else on the page that
+        // depends on it reads this attribute rather than keeping its own copy.
+        document.documentElement.dataset.role = tab.dataset.role;
+        rolePanel.setAttribute('aria-labelledby', tab.id);
+
+        if (reducedMotion.matches) {
+          applyCopy(tab.dataset.role);
+          return;
+        }
+        rolePanel.classList.add('is-swapping');
+        setTimeout(() => {
+          applyCopy(tab.dataset.role);
+          rolePanel.classList.remove('is-swapping');
+        }, 180);
+      };
+
+      roleTabs.forEach((t) => t.addEventListener('click', () => selectRole(t)));
+      bindTablistKeys(document.getElementById('hero-role-toggle'), roleTabs);
+      // publish the initial role so role-gated sections start in the right state
+      document.documentElement.dataset.role =
+        (roleTabs.find((t) => t.getAttribute('aria-selected') === 'true') || roleTabs[0]).dataset.role;
+    }
+
+    /* ---- patient app showcase tabs ----
+       Click only for now; the scroll-linked variant comes later and will drive this
+       same selectAppTab(), so the switching logic stays in one place. */
+    const appTabs = [...document.querySelectorAll('.phone-tabs .role-opt')];
+
+    if (appTabs.length) {
+      const selectAppTab = (tab) => {
+        if (tab.getAttribute('aria-selected') === 'true') return;
+        appTabs.forEach((t) => {
+          const on = t === tab;
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+          t.tabIndex = on ? 0 : -1;
+          t.classList.toggle('btn-primary', on);
+          t.classList.toggle('btn-ghost', !on);
+          const panel = document.getElementById(t.getAttribute('aria-controls'));
+          if (panel) panel.dataset.active = on ? 'true' : 'false';
+        });
+        // the flanking cards live outside the frame, so they're switched by key
+        const key = tab.id.replace('app-tab-', '');
+        document.querySelectorAll('.phone-notes').forEach((g) => {
+          g.dataset.active = g.dataset.notesFor === key ? 'true' : 'false';
+        });
+        // and the mockup itself, for the tabs that have one of their own — the rest
+        // fall back to the booking shot underneath
+        document.querySelectorAll('.phone-shot-alt').forEach((s) => {
+          s.dataset.active = s.dataset.shotFor === key ? 'true' : 'false';
+        });
+      };
+
+      /* Scroll-driven tabs, desktop only. Both the runway height and the sticky
+         pinning are inside the >=1024px query, so on phones this whole block sits
+         idle and the tabs stay purely click-driven. */
+      const runway = document.querySelector('.showcase-scroll');
+      const desktop = window.matchMedia('(min-width: 1024px)');
+      const scrollDriven = () => desktop.matches && runway.offsetHeight > window.innerHeight * 1.5;
+
+      const tabIndexFromScroll = () => {
+        const total = runway.offsetHeight - window.innerHeight;
+        if (total <= 0) return 0;
+        const passed = Math.min(Math.max(-runway.getBoundingClientRect().top, 0), total);
+        return Math.min(appTabs.length - 1, Math.floor((passed / total) * appTabs.length));
+      };
+
+      let ticking = false;
+      const onShowcaseScroll = () => {
+        if (ticking || !scrollDriven()) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          ticking = false;
+          selectAppTab(appTabs[tabIndexFromScroll()]);
+        });
+      };
+      window.addEventListener('scroll', onShowcaseScroll, { passive: true });
+      window.addEventListener('resize', onShowcaseScroll);
+
+      appTabs.forEach((t, i) =>
+        t.addEventListener('click', () => {
+          // While scroll drives the tabs, clicking has to move the page or the next
+          // scroll event would immediately overwrite the choice.
+          if (scrollDriven()) {
+            const total = runway.offsetHeight - window.innerHeight;
+            const target = runway.getBoundingClientRect().top + window.scrollY +
+              (total * (i + 0.5)) / appTabs.length;
+            window.scrollTo({
+              top: target,
+              behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            });
+          } else {
+            selectAppTab(t);
+          }
+        })
+      );
+
+      bindTablistKeys(document.querySelector('.phone-tabs'), appTabs);
+    }
+
+    /* ---- scroll reveal (transform + opacity only) ----
+       Driven by an rAF-throttled scroll check rather than IntersectionObserver so that
+       fast or programmatic scrolling can never leave a section stuck invisible: anything
+       already past the top of the viewport is revealed too. */
+    const pending = [...document.querySelectorAll('.reveal, .mock')];
+
+    const revealCheck = () => {
+      const h = window.innerHeight;
+      for (let i = pending.length - 1; i >= 0; i--) {
+        const r = pending[i].getBoundingClientRect();
+        if (r.bottom <= 0 || r.top < h * 0.92) {
+          pending[i].classList.add('is-inview');
+          pending.splice(i, 1);
+        }
+      }
+    };
+
+    const stop = () => {
+      window.removeEventListener('scroll', onScrollReveal);
+      window.removeEventListener('resize', onScrollReveal);
+      clearInterval(sweep);
+    };
+
+    const onScrollReveal = () => {
+      revealCheck();
+      if (!pending.length) stop();
+    };
+
+    // A low-frequency sweep backs up the scroll listener: scroll events can be coalesced
+    // or dropped during fast/programmatic scrolling, and a section that never gets its
+    // class would stay invisible for good. The interval clears itself once everything
+    // has been revealed, so it costs nothing after the first pass.
+    const sweep = setInterval(onScrollReveal, 250);
+
+    revealCheck();
+    window.addEventListener('scroll', onScrollReveal, { passive: true });
+    window.addEventListener('resize', onScrollReveal);
+    if (!pending.length) stop();
+
+    /* ---- active nav link on scroll ---- */
+    const links = [...document.querySelectorAll('.nav-desktop .nav-link')];
+    const sections = links
+      .map((l) => document.querySelector(l.getAttribute('href')))
+      .filter(Boolean);
+
+    if ('IntersectionObserver' in window && sections.length) {
+      const spy = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            links.forEach((l) =>
+              l.classList.toggle('is-active', l.getAttribute('href') === '#' + entry.target.id)
+            );
+          });
+        },
+        { rootMargin: '-45% 0px -50% 0px' }
+      );
+      sections.forEach((s) => spy.observe(s));
+    }
+  })();
+</script>

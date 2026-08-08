@@ -1,0 +1,17 @@
+# Capture output from the screenshot/compare loop — ~290MB and regenerated on demand
+# by `node screenshot.mjs`, so there is nothing here worth versioning.
+temporary screenshots/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+
+# Local-only project notes
+*.local.md
