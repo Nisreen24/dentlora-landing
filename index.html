@@ -2328,7 +2328,10 @@
 <header class="site-header" id="site-header">
   <div class="shell flex items-center justify-between gap-6">
     <a href="#home" class="logo shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/50" aria-label="Dentlora — home">
-      <img src="brand%20assets/dentlora-wordmark.png" alt="Dentlora" width="294" height="56" />
+      <!-- 1024x228 is the artwork's own ratio, cut from the full-resolution master. The
+           attributes only reserve the right shape before it loads; .logo img sets the
+           height and leaves the width to follow. -->
+      <img src="brand%20assets/dentlora-wordmark.png" alt="Dentlora" width="1024" height="228" />
     </a>
 
     <nav class="nav-desktop items-center gap-8" aria-label="Primary">
@@ -3065,7 +3068,7 @@
   <div class="shell-wide">
     <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-10">
       <div class="max-w-[420px]">
-        <img src="brand%20assets/dentlora-wordmark.png" alt="Dentlora" width="294" height="56" class="logo-mark h-[54px] w-auto" />
+        <img src="brand%20assets/dentlora-wordmark.png" alt="Dentlora" width="1024" height="228" class="logo-mark h-[54px] w-auto" />
         <p class="t-overline mt-5" style="color:#63A2D5">Your smile, our care</p>
         <p class="t-body mt-3">
           Connected dental care for patients, doctors, and clinics — from booking to follow-up.
