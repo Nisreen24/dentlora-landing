@@ -1377,13 +1377,18 @@
     box-shadow: var(--shadow-lg);
   }
 
-  /* inset negatively so the asset's own rounded-card edge is cropped away */
+  /* The source art has a rounded card painted into it, about 54px in from its own edges.
+     That was hidden by pulling this layer out past the card and letting overflow clip it —
+     but the pull is in pixels while cover rescales with the viewport, so once the card grew
+     wider than the art's 3:1 the painted edge landed inside and drew a seam down the left.
+     cta-bg.png is the same art with that frame cut off, so the layer sits flush and the
+     card's own border and radius make the edge. */
   .cta-card::before {
     content: '';
     position: absolute;
-    inset: -44px -24px;
+    inset: 0;
     z-index: -1;
-    background-image: url('brand%20assets/bae38d54-5a66-4526-b9d1-3a96b3d89b18.png');
+    background-image: url('brand%20assets/cta-bg.png');
     background-size: cover;
     background-position: center;
   }
