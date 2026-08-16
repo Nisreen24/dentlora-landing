@@ -1869,13 +1869,29 @@
 
   /* decorative art anchored with physical offsets */
   html[dir='rtl'] .problem-photo { left: auto; right: 21%; }
-  html[dir='rtl'] .hero-art,
   html[dir='rtl'] .features-art,
   html[dir='rtl'] .journey-tooth,
   html[dir='rtl'] .footer-art { transform: scaleX(-1); }
 
+  /* The hero mark is not mirrored with the rest. It is a lit three-dimensional render:
+     flipping it throws the highlight to the wrong side and turns the mark away from the
+     copy. But it cannot simply be panned left either — it sits in the right half of the
+     source, and moving it across at anything like its drawn size runs the image off the
+     canvas and leaves a hard edge where the wash stops. So RTL gets its own file: the
+     right 58% of the same artwork, which is the mark and nothing else, pinned to the
+     left edge at the size it renders in English. Same drawing, same orientation, other
+     side of the page. */
+  html[dir='rtl'] .hero-art {
+    background-image: url('brand%20assets/hero-art-rtl.png');
+    background-position: left 88%;
+    /* The crop stops where the wash was still going, so its right edge would otherwise
+       draw a line down the page. Ramp it out over the last stretch — the mark itself sits
+       well left of this, so nothing fades the focal point. */
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 48%, rgba(0, 0, 0, 0.45) 55%, transparent 60%);
+    mask-image: linear-gradient(to right, #000 0, #000 48%, rgba(0, 0, 0, 0.45) 55%, transparent 60%);
+  }
+
   /* ...but anything with text on top of mirrored art has to be un-mirrored again */
-  html[dir='rtl'] .hero-art > *,
   html[dir='rtl'] .features-art > *,
   html[dir='rtl'] .footer-art > * { transform: scaleX(-1); }
 
@@ -2285,6 +2301,7 @@
 
     .hero { padding-block: 148px 72px; }
     .hero-art { background-size: 150% auto; background-position: 74% 78%; }
+    html[dir='rtl'] .hero-art { background-size: 88vw auto; background-position: left -8vw top 78%; }
 
     .icon-tile { width: 48px; height: 48px; border-radius: var(--r-sm); }
     .icon-tile .icon { width: 22px; height: 22px; }
@@ -2367,6 +2384,7 @@
     }
 
     .hero-art { background-size: 132% auto; background-position: 76% 62%; }
+    html[dir='rtl'] .hero-art { background-size: 77vw auto; background-position: left -7vw top 62%; }
 
     .hero-wash {
       background: radial-gradient(72% 90% at 8% 46%, rgba(243, 244, 253, 0.94) 0%, rgba(243, 244, 253, 0.72) 34%, rgba(243, 244, 253, 0) 66%),
@@ -2515,6 +2533,7 @@
 
     .hero { min-height: 1024px; padding-block: 150px 64px; }
     .hero-art { background-size: 116% auto; background-position: right -40px center; }
+    html[dir='rtl'] .hero-art { background-size: 68vw auto; background-position: left -6vw center; }
 
     .steps-panel { padding: 48px 22px 44px; }
     .steps-grid { gap: 40px; }
