@@ -1897,6 +1897,81 @@
      the page behind scroll, which reads as the modal sliding away. */
   body.modal-open { overflow: hidden; }
 
+  /* Long-form legal copy. Scoped to .terms so the bare h3/h4/ul inside the dialog get
+     the site's type without adding a utility class to every one of a hundred elements. */
+  .terms h3 {
+    margin-top: var(--s-8);
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 20px;
+    line-height: 1.35;
+    font-weight: 600;
+    color: var(--ink-strong);
+  }
+
+  .terms h4 {
+    margin-top: var(--s-5);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink-strong);
+  }
+
+  .terms p,
+  .terms li {
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--ink-body);
+  }
+
+  .terms > * + * { margin-top: var(--s-3); }
+  .terms h3 + p, .terms h4 + p, .terms h3 + ul { margin-top: var(--s-2); }
+
+  .terms ul {
+    display: grid;
+    gap: var(--s-2);
+    padding-left: 1.15em;
+    list-style: disc;
+  }
+
+  .terms li::marker { color: var(--num-soft); }
+
+  .terms-meta {
+    font-family: 'Spectral', Georgia, serif;
+    font-size: 17px !important;
+    line-height: 1.5 !important;
+    color: var(--ink-strong) !important;
+  }
+
+  /* Version, countries and languages read as a small key/value block rather than prose */
+  .terms-facts {
+    display: grid;
+    gap: var(--s-2);
+    padding: var(--s-4);
+    border-radius: var(--r-sm);
+    background: var(--glass-strong);
+    border: 1px solid var(--glass-line);
+  }
+
+  .terms-facts > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px var(--s-2);
+  }
+
+  .terms-facts dt {
+    min-width: 148px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    align-self: center;
+  }
+
+  .terms-facts dd { font-size: 15px; color: var(--ink-strong); }
+
+  /* Arabic runs right-to-left inside otherwise left-to-right lines */
+  .terms [lang='ar'] { font-size: 1.02em; }
+
   .footer-legal {
     font-size: 15px;
     color: var(--ink-faint);
@@ -3251,10 +3326,122 @@
       </button>
     </div>
 
-    <div class="modal-body">
-      <p class="t-body">Our terms and conditions will be published here.</p>
-      <p class="t-body">For anything you need in the meantime, write to us at
-        <a href="mailto:Support@dentlora.com" style="color:var(--brand)">Support@dentlora.com</a>.</p>
+    <div class="modal-body terms">
+      <p class="terms-meta">
+        Website &amp; Mobile Applications<br />
+        <span dir="rtl" lang="ar">الموقع الإلكتروني وتطبيقات الهاتف المحمول</span>
+      </p>
+
+      <dl class="terms-facts">
+        <div><dt>Version</dt><dd>1.0 · August 2026</dd></div>
+        <div><dt>Applicable countries</dt><dd>Egypt · Canada · United States</dd></div>
+        <div><dt>Languages</dt><dd>English · <span dir="rtl" lang="ar">العربية</span></dd></div>
+      </dl>
+
+      <h3>1. Introduction and Acceptance</h3>
+      <p>These Terms and Conditions (the “Terms”) govern your access to and use of the Dentlora dental platform, including the Dentlora website, the patient mobile application, the doctor application, the clinic dashboard, and the administration dashboard (together, the “Platform”). Dentlora is a digital dental ecosystem that connects patients, dentists, and dental clinics through one integrated system covering the full care journey, from discovery and booking through treatment, prescription, follow-up, and ongoing care tracking.</p>
+      <p>By downloading, accessing, registering for, or using the Platform, you confirm that you have read, understood, and agree to be bound by these Terms and by the Dentlora Privacy Policy. If you do not agree, you must not use the Platform.</p>
+      <p>The Platform operates in Egypt, Canada, and the United States. Certain features are country-specific and may not be available everywhere. Where local law imposes requirements that differ from these Terms, the applicable local law prevails for users in that country.</p>
+
+      <h3>2. Definitions</h3>
+      <ul>
+        <li>“Patient” means an individual who uses the Platform to discover doctors, book appointments, and manage their dental care journey.</li>
+        <li>“Doctor” means a licensed dental practitioner registered on the Platform who manages appointments, sessions, prescriptions, treatment plans, and follow-up care.</li>
+        <li>“Clinic” means a dental clinic whose staff use the clinic dashboard to confirm payments, monitor sessions, and manage operational records.</li>
+        <li>“Administrator” means a platform administrator or a country and regional administrator who manages master data, access, and operational oversight within an assigned scope.</li>
+        <li>“Appointment” means a booking made by a Patient with a Doctor at a Clinic for a specific service, date, and time slot.</li>
+        <li>“Treatment Plan” means a structured, multi-session course of care created by a Doctor following a completed appointment session.</li>
+        <li>“Content” means any text, notes, images, X-rays, documents, ratings, or other material submitted to or generated on the Platform.</li>
+      </ul>
+
+      <h3>3. Eligibility and Accounts</h3>
+      <h4>3.1 Eligibility</h4>
+      <p>You must be at least 18 years old, or the age of majority in your country of residence, to hold an account. A minor may receive care only through an account held and managed by a parent or legal guardian, who accepts these Terms on the minor’s behalf and remains responsible for use of that account.</p>
+      <h4>3.2 Registration and Authentication</h4>
+      <p>Patients register and log in using a mobile phone number and a one-time passcode delivered by SMS. New patients complete their registration details, including name, nationality, and an optional email address, after the number is verified, and must accept these Terms during registration. Visitors may browse parts of the Platform without an account, but restricted features require verification.</p>
+      <p>Doctors, clinic users, and administrators access their respective applications using credentials issued by an administrator. Doctor accounts are created and approved through an administrative review process rather than by open self-registration, so that professional credentials can be verified before a doctor becomes visible to patients.</p>
+      <h4>3.3 Account Responsibility</h4>
+      <ul>
+        <li>You are responsible for keeping your phone number, device, and credentials secure, and for all activity carried out through your account.</li>
+        <li>You must provide accurate, current, and complete information and keep it up to date.</li>
+        <li>You must not share, sell, or transfer your account, or impersonate any other person or professional.</li>
+        <li>You must notify Dentlora promptly of any unauthorised use of your account.</li>
+      </ul>
+
+      <h3>4. The Services</h3>
+      <p>Depending on your role and country, the Platform provides:</p>
+      <ul>
+        <li>Discovery and search of doctors and clinics, including symptom-based doctor matching where that feature is enabled.</li>
+        <li>Appointment booking with a transparent pricing summary shown before confirmation.</li>
+        <li>Session management, clinical notes, and issuance of prescriptions by Doctors.</li>
+        <li>Creation and tracking of multi-session treatment plans, with a visible plan timeline and session progress.</li>
+        <li>Follow-up decisions, patient symptom submission, and follow-up sessions.</li>
+        <li>Prescription viewing and PDF download, ratings, notifications, and management of your profile and medical history.</li>
+      </ul>
+      <p>Dentlora is a facilitation and management platform. It does not itself provide dental or medical care, diagnosis, or treatment, and all clinical decisions are made by the treating Doctor.</p>
+
+      <h3>5. Medical Disclaimer</h3>
+      <p>The Platform connects you with independent Doctors and Clinics. Dentlora does not provide medical advice, does not practise dentistry or medicine, and is not a substitute for professional in-person examination. Information displayed on the Platform, including symptom-based matching results, is intended to help you find and organise care and must not be relied upon as a diagnosis.</p>
+      <p>The professional relationship for any diagnosis, prescription, or treatment exists between you and your Doctor and Clinic, who are solely responsible for the care they deliver. In a medical emergency, do not use the Platform. Contact your local emergency services immediately.</p>
+
+      <h3>6. Booking, Fees, and Payment</h3>
+      <h4>6.1 Pricing</h4>
+      <p>The total price of a booking is the sum of the Doctor Fee and the Clinic Fee, each defined per doctor per clinic. Before you confirm a booking, the Platform displays the Doctor Fee, the Clinic Fee, and the Total Price. Any platform commission applies to the Clinic Fee only and does not increase the Total Price shown to you.</p>
+      <h4>6.2 Payment Confirmation</h4>
+      <p>Payment is arranged directly with the Clinic and confirmed by clinic staff, typically once the Patient attends. An appointment becomes ready for the session only after the Clinic confirms payment, and each treatment plan session likewise requires payment confirmation by the Clinic before it proceeds. Dentlora does not hold, collect, or settle patient payments on behalf of Clinics under the current release.</p>
+      <h4>6.3 Cancellations and Refunds</h4>
+      <p>Cancellation and refund arrangements are handled directly between the Patient and the Clinic, in accordance with the Clinic’s own policy and applicable local law. Dentlora does not process, adjudicate, or guarantee refunds. Where cancellation or refund functionality is introduced to the Platform in future, these Terms will be updated accordingly.</p>
+
+      <h3>7. Prescriptions, Treatment Plans, and Follow-Up</h3>
+      <p>A prescription may be issued only in connection with a completed session and must include at least one medication. Prescriptions are made available to the Patient for viewing and PDF download.</p>
+      <p>A treatment plan may be created only after a completed appointment session and consists of one or more sessions, each with its own title, description, and price. A completed plan is archived in the patient’s care record.</p>
+      <p>After any completed session, the Doctor decides whether follow-up is required. If it is, the Patient receives a notification, submits their current symptoms through the follow-up form, and the Doctor reviews them, conducts the follow-up session, and closes it with notes.</p>
+      <p>You are responsible for using medications and following any treatment plan strictly as directed by your Doctor and the accompanying professional guidance.</p>
+
+      <h3>8. Ratings and Reviews</h3>
+      <p>Patients may submit ratings about their care experience. To keep the Platform fair and trustworthy, ratings are moderated before they become publicly visible. You agree that your ratings and reviews will be truthful, based on genuine experience, and free of unlawful, defamatory, offensive, or misleading content. Dentlora may decline to publish, or may remove, content that breaches these Terms.</p>
+
+      <h3>9. Acceptable Use</h3>
+      <p>You agree that you will not:</p>
+      <ul>
+        <li>Use the Platform for any unlawful, fraudulent, or harmful purpose, or in breach of any applicable healthcare or data protection law.</li>
+        <li>Access, attempt to access, or interfere with data belonging to other patients, doctors, or clinics, or with data outside your authorised country scope.</li>
+        <li>Submit content that is false, misleading, infringing, defamatory, obscene, or that contains malicious code.</li>
+        <li>Reverse engineer, scrape, overload, disrupt, or circumvent any security or access control feature of the Platform.</li>
+        <li>Use the Platform to provide or solicit care in a manner that violates professional licensing requirements.</li>
+        <li>Misrepresent professional qualifications, licensing status, clinic affiliation, or availability.</li>
+      </ul>
+
+      <h3>10. Doctors, Clinics, and Administrators</h3>
+      <p>Doctors and Clinics are independent providers, responsible for the accuracy of their profiles, availability, fees, clinical records, and the care they deliver. A Doctor operates within a single country and may be assigned to multiple clinics within that country, and a Clinic belongs to a single country. Administrators manage master data within an assigned scope, and country and regional administrators may view and manage only data belonging to their assigned countries. Each party must comply with these Terms and with all professional, licensing, and legal obligations applicable to it.</p>
+
+      <h3>11. Intellectual Property</h3>
+      <p>The Platform, including its software, design, name, logo, trademarks, and the content Dentlora creates, is owned by Dentlora or its licensors and protected by intellectual property law. You are granted a limited, non-exclusive, non-transferable, revocable licence to use the Platform for its intended purpose. You retain ownership of the Content you submit and grant Dentlora a licence to host, process, and display that Content solely to operate and provide the Platform. You may not copy, modify, distribute, or create derivative works from the Platform except as expressly permitted.</p>
+
+      <h3>12. Third-Party Services</h3>
+      <p>The Platform depends on third-party services to function, including SMS and one-time-passcode delivery, push notifications, email delivery, mapping and external location data, file storage, and PDF generation. These services are provided by third parties under their own terms, and Dentlora is not responsible for their availability, accuracy, or performance. Your use of features that rely on them is also subject to those providers’ terms.</p>
+
+      <h3>13. Privacy and Data Protection</h3>
+      <p>Dentlora processes personal and health-related information to operate the Platform, as described in the Dentlora Privacy Policy, which forms part of these Terms. Data is organised with country-based isolation and role-based access control, so that each user reaches only the data within their permitted scope. By using the Platform, you agree to receive service communications, including verification codes, appointment updates, treatment plan and follow-up notifications, and administrative messages.</p>
+
+      <h3>14. Availability, Language, and Changes</h3>
+      <p>The Platform is offered on an as-available basis. Dentlora may modify, suspend, or discontinue features, and may add or remove supported countries. Where a change materially affects your rights, notice will be given in the app, by email, or by another prominent means before it takes effect, and continued use after that date constitutes acceptance.</p>
+      <p>The Platform and these Terms are provided in Arabic and English. Both versions are intended to carry the same meaning; if a discrepancy arises, the English version is used to resolve interpretation, except where local law requires the Arabic version to prevail.</p>
+
+      <h3>15. Limitation of Liability</h3>
+      <p>To the maximum extent permitted by law, Dentlora is not liable for the acts, omissions, or clinical decisions of any Doctor or Clinic, for any medical outcome, or for indirect, incidental, special, or consequential loss arising from your use of the Platform. Nothing in these Terms excludes liability that cannot be excluded under applicable law, including liability for death or personal injury caused by proven negligence. Where liability cannot be fully excluded, it is limited to the maximum extent permitted by the law applicable in your country.</p>
+
+      <h3>16. Indemnification</h3>
+      <p>You agree to indemnify and hold harmless Dentlora, its affiliates, and their personnel against claims, damages, losses, and reasonable expenses arising from your breach of these Terms, your misuse of the Platform, or your violation of any law or of the rights of any third party.</p>
+
+      <h3>17. Suspension and Termination</h3>
+      <p>You may stop using the Platform at any time and may request deletion of your account. Dentlora, or an administrator acting within scope, may suspend or terminate access where these Terms are breached, where required by law, or where necessary to protect the safety, integrity, or lawful operation of the Platform. Clinical records are retained after termination for the period required by applicable medical record-keeping rules. Provisions that by their nature survive termination, including intellectual property, disclaimers, limitation of liability, and governing law, continue to apply.</p>
+
+      <h3>18. Governing Law and Disputes</h3>
+      <p>These Terms are governed by the laws of the country in which you access and use the Platform, being Egypt, Canada, or the United States, and disputes are subject to the courts or competent authorities of that jurisdiction. This is without prejudice to any mandatory consumer or healthcare law protections available to you locally. Complaints about care are addressed first with the treating Doctor or Clinic, and complaints about the Platform are addressed with Dentlora.</p>
+
+      <h3>19. Contact</h3>
+      <p>Questions about these Terms, and reports of misuse or of content that breaches them, can be submitted through the contact channels published on the Dentlora website and in the support section of the Dentlora applications.</p>
     </div>
   </div>
 </dialog>
