@@ -1811,6 +1811,103 @@
     height: 44px;
   }
 
+  /* ============================================================
+     COMPONENT — Modal
+     ============================================================ */
+  /* Built on <dialog> rather than a div: showModal() gives the focus trap, Escape to
+     close, the inert background and the top layer for free, and getting those right by
+     hand is where hand-rolled modals usually fail. */
+  .modal {
+    width: min(760px, calc(100vw - var(--gutter) * 2));
+    max-height: min(80vh, 720px);
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-xl);
+    background: transparent;
+    overflow: visible;
+  }
+
+  .modal::backdrop {
+    background: rgba(26, 43, 75, 0.34);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .modal-card {
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+    border-radius: var(--r-xl);
+    background: var(--surface-page);
+    border: 1px solid var(--glass-line);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  .modal-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-4);
+    flex: none;
+    padding: var(--s-6) var(--s-6) var(--s-4);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .modal-close {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: var(--r-pill);
+    color: var(--ink-muted);
+    background: var(--glass-strong);
+    border: 1px solid var(--glass-line);
+    transition: color 200ms var(--ease-out), transform 200ms var(--ease-out);
+  }
+
+  .modal-close:hover { color: var(--brand); transform: translateY(-1px); }
+
+  /* The body is the only scroller, so the header stays put while the terms run long. */
+  .modal-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: var(--s-6);
+    overscroll-behavior: contain;
+  }
+
+  .modal-body > * + * { margin-top: var(--s-4); }
+
+  /* Opening animation. Skipped under reduced-motion, where the dialog just appears. */
+  @media (prefers-reduced-motion: no-preference) {
+    .modal[open] { animation: modal-in 260ms var(--ease-out); }
+    .modal[open]::backdrop { animation: backdrop-in 260ms var(--ease-out); }
+  }
+
+  @keyframes modal-in {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Paired with dialog.showModal(): the background is inert but most browsers still let
+     the page behind scroll, which reads as the modal sliding away. */
+  body.modal-open { overflow: hidden; }
+
+  .footer-legal {
+    font-size: 15px;
+    color: var(--ink-faint);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--hairline);
+    transition: color 200ms var(--ease-out);
+  }
+
+  .footer-legal:hover { color: var(--brand); text-decoration-color: currentColor; }
+
   .footer-art {
     background-image: url('brand%20assets/f461ba4c-28df-4551-9644-d53dcc01c30c.png');
     background-position: center bottom;
@@ -3126,7 +3223,12 @@
     <hr class="mt-11 border-0 h-px" style="background:var(--hairline)" />
 
     <div class="mt-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-      <p class="text-[15px]" style="color:var(--ink-faint)">© 2026 Dentlora. All rights reserved.</p>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <p class="text-[15px]" style="color:var(--ink-faint)">© 2026 Dentlora. All rights reserved.</p>
+        <!-- A button, not a link: it opens a dialog rather than going anywhere, and an
+             <a href="#"> here would put a dead entry in the history and the address bar. -->
+        <button type="button" class="footer-legal" data-modal-open="terms-modal">Terms &amp; Conditions</button>
+      </div>
 
       <div class="lang-switch">
         <svg class="icon icon-sm" style="color:var(--brand)" aria-hidden="true"><use href="#i-globe" /></svg>
@@ -3137,6 +3239,25 @@
     </div>
   </div>
 </footer>
+
+<!-- Terms dialog. The body is intentionally a placeholder: the real terms go in
+     .modal-body and nothing else has to change. -->
+<dialog class="modal" id="terms-modal" aria-labelledby="terms-modal-title">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2 class="t-h3" id="terms-modal-title">Terms &amp; Conditions</h2>
+      <button type="button" class="modal-close" data-modal-close aria-label="Close terms and conditions">
+        <svg class="icon icon-sm" aria-hidden="true"><use href="#i-close" /></svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <p class="t-body">Our terms and conditions will be published here.</p>
+      <p class="t-body">For anything you need in the meantime, write to us at
+        <a href="mailto:Support@dentlora.com" style="color:var(--brand)">Support@dentlora.com</a>.</p>
+    </div>
+  </div>
+</dialog>
 
 <script>
   (() => {
@@ -3402,5 +3523,44 @@
       );
       sections.forEach((s) => spy.observe(s));
     }
+
+    /* ---- modals ----
+       <dialog> already handles Escape, the focus trap and returning focus to whatever
+       opened it, so this only wires the triggers, the light-dismiss and the scroll lock. */
+    const modalTriggers = [...document.querySelectorAll('[data-modal-open]')];
+
+    modalTriggers.forEach((trigger) => {
+      const modal = document.getElementById(trigger.dataset.modalOpen);
+      if (!modal) return;
+
+      trigger.addEventListener('click', () => {
+        modal.showModal();
+        document.body.classList.add('modal-open');
+      });
+
+      modal.addEventListener('close', () => {
+        document.body.classList.remove('modal-open');
+      });
+
+      modal.querySelectorAll('[data-modal-close]').forEach((btn) => {
+        btn.addEventListener('click', () => modal.close());
+      });
+
+      /* Light-dismiss. The click target is the <dialog> itself only when the press
+         landed on the backdrop, since .modal-card covers the whole element otherwise.
+         Checking the point against the card's box as well, because a drag that starts
+         inside the card and releases outside it still reports the dialog as the target
+         and would otherwise close the modal mid-selection. */
+      modal.addEventListener('click', (event) => {
+        if (event.target !== modal) return;
+        const card = modal.querySelector('.modal-card');
+        if (!card) return modal.close();
+        const box = card.getBoundingClientRect();
+        const outside =
+          event.clientX < box.left || event.clientX > box.right ||
+          event.clientY < box.top || event.clientY > box.bottom;
+        if (outside) modal.close();
+      });
+    });
   })();
 </script>
