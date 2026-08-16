@@ -1952,43 +1952,15 @@
 
   .terms li::marker { color: var(--num-soft); }
 
-  .terms-meta {
-    font-family: 'Spectral', Georgia, serif;
-    font-size: 17px !important;
-    line-height: 1.5 !important;
-    color: var(--ink-strong) !important;
+  /* Closes the document rather than heading it — a version stamp, not a masthead. */
+  .terms-version {
+    margin-top: var(--s-8) !important;
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--hairline);
+    font-size: 13px !important;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted) !important;
   }
-
-  /* Version, countries and languages read as a small key/value block rather than prose */
-  .terms-facts {
-    display: grid;
-    gap: var(--s-2);
-    padding: var(--s-4);
-    border-radius: var(--r-sm);
-    background: var(--glass-strong);
-    border: 1px solid var(--glass-line);
-  }
-
-  .terms-facts > div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px var(--s-2);
-  }
-
-  .terms-facts dt {
-    min-width: 148px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-muted);
-    align-self: center;
-  }
-
-  .terms-facts dd { font-size: 15px; color: var(--ink-strong); }
-
-  /* Arabic runs right-to-left inside otherwise left-to-right lines */
-  .terms [lang='ar'] { font-size: 1.02em; }
 
   .footer-legal {
     font-size: 15px;
@@ -3450,12 +3422,7 @@
       <h3>19. Contact</h3>
       <p>Questions about these Terms, and reports of misuse or of content that breaches them, can be submitted through the contact channels published on the Dentlora website and in the support section of the Dentlora applications.</p>
 
-      <dl class="terms-facts">
-        <div><dt>Document</dt><dd>Website &amp; Mobile Applications</dd></div>
-        <div><dt>Version</dt><dd>1.0 · August 2026</dd></div>
-        <div><dt>Applicable countries</dt><dd>Egypt · Canada · United States</dd></div>
-        <div><dt>Languages</dt><dd>English · Arabic</dd></div>
-      </dl>
+      <p class="terms-version">Version 1.0 · August 2026</p>
     </div>
   </div>
 </dialog>
