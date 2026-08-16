@@ -1827,21 +1827,36 @@
     overflow: visible;
   }
 
+  /* Pushed further than a plain scrim: the card is translucent, so whatever shows
+     through it is this layer, and a soft even field keeps the text off busy artwork. */
   .modal::backdrop {
-    background: rgba(26, 43, 75, 0.34);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(26, 43, 75, 0.42);
+    backdrop-filter: blur(14px) saturate(120%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
   }
 
+  /* Glass, in the same idiom as .phone-note and .phone-tabs: a white wash, a heavy
+     blur and a lift in saturation so the colour behind still reads through. Held at 0.72
+     rather than the 0.62 those use, because this surface carries thousands of words of
+     body copy and every point of transparency comes out of the text contrast. */
   .modal-card {
     display: flex;
     flex-direction: column;
     max-height: inherit;
     border-radius: var(--r-xl);
-    background: var(--surface-page);
-    border: 1px solid var(--glass-line);
-    box-shadow: var(--shadow-lg);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(34px) saturate(180%);
+    -webkit-backdrop-filter: blur(34px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    /* the inset highlight is what reads as a lit glass edge rather than a flat panel */
+    box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.75);
     overflow: hidden;
+  }
+
+  /* Safari and Firefox both ship backdrop-filter now, but if it is ever missing the card
+     would sit at 72% over live page content and the terms would be unreadable. */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .modal-card { background: var(--surface-page); }
   }
 
   .modal-head {
@@ -1851,7 +1866,10 @@
     gap: var(--s-4);
     flex: none;
     padding: var(--s-6) var(--s-6) var(--s-4);
-    border-bottom: 1px solid var(--hairline);
+    /* a touch whiter than the body so the title plate separates from the text scrolling
+       beneath it without needing a hard rule */
+    background: rgba(255, 255, 255, 0.34);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.65);
   }
 
   .modal-close {
@@ -3327,17 +3345,6 @@
     </div>
 
     <div class="modal-body terms">
-      <p class="terms-meta">
-        Website &amp; Mobile Applications<br />
-        <span dir="rtl" lang="ar">الموقع الإلكتروني وتطبيقات الهاتف المحمول</span>
-      </p>
-
-      <dl class="terms-facts">
-        <div><dt>Version</dt><dd>1.0 · August 2026</dd></div>
-        <div><dt>Applicable countries</dt><dd>Egypt · Canada · United States</dd></div>
-        <div><dt>Languages</dt><dd>English · <span dir="rtl" lang="ar">العربية</span></dd></div>
-      </dl>
-
       <h3>1. Introduction and Acceptance</h3>
       <p>These Terms and Conditions (the “Terms”) govern your access to and use of the Dentlora dental platform, including the Dentlora website, the patient mobile application, the doctor application, the clinic dashboard, and the administration dashboard (together, the “Platform”). Dentlora is a digital dental ecosystem that connects patients, dentists, and dental clinics through one integrated system covering the full care journey, from discovery and booking through treatment, prescription, follow-up, and ongoing care tracking.</p>
       <p>By downloading, accessing, registering for, or using the Platform, you confirm that you have read, understood, and agree to be bound by these Terms and by the Dentlora Privacy Policy. If you do not agree, you must not use the Platform.</p>
@@ -3442,6 +3449,13 @@
 
       <h3>19. Contact</h3>
       <p>Questions about these Terms, and reports of misuse or of content that breaches them, can be submitted through the contact channels published on the Dentlora website and in the support section of the Dentlora applications.</p>
+
+      <dl class="terms-facts">
+        <div><dt>Document</dt><dd>Website &amp; Mobile Applications</dd></div>
+        <div><dt>Version</dt><dd>1.0 · August 2026</dd></div>
+        <div><dt>Applicable countries</dt><dd>Egypt · Canada · United States</dd></div>
+        <div><dt>Languages</dt><dd>English · Arabic</dd></div>
+      </dl>
     </div>
   </div>
 </dialog>
