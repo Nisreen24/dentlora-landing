@@ -14,7 +14,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<!-- IBM Plex Sans Arabic carries the Arabic UI. Google Fonts serves it with a
+     unicode-range, so English visitors never download the Arabic files. -->
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -1304,7 +1306,7 @@
     flex-direction: row;
     align-items: flex-start;
     gap: 16px;
-    text-align: left;
+    text-align: start;
     z-index: 1;
     height: 100%;
   }
@@ -1469,7 +1471,7 @@
     -webkit-backdrop-filter: blur(18px) saturate(160%);
     box-shadow: var(--shadow-float);
     font-family: 'Inter', system-ui, sans-serif;
-    text-align: left;
+    text-align: start;
     /* start low and translucent; the active tab lifts them into place */
     opacity: 0;
     transform: translateY(14px);
@@ -1534,7 +1536,7 @@
   a.phone-note-cta:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
   .soon-tag {
-    margin-left: auto;
+    margin-inline-start: auto;
     flex: none;
     font-size: 10px;
     font-weight: 600;
@@ -1778,13 +1780,13 @@
 
   .timeline-item {
     position: relative;
-    padding-left: 22px;
+    padding-inline-start: 22px;
   }
 
   .timeline-item::before {
     content: '';
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     top: 5px;
     width: 8px;
     height: 8px;
@@ -1810,6 +1812,101 @@
   .site-footer .logo-mark {
     height: 44px;
   }
+
+  /* ============================================================
+     ARABIC / RTL
+     ============================================================ */
+  /* Direction comes from dir=rtl on <html>, which already flips flex and grid flow,
+     text alignment and every logical property. What follows is only the places that
+     were written with physical left/right and cannot flip on their own. */
+
+  /* Arabic has no serif/sans split to mirror Spectral against Inter, so one family
+     carries both roles and hierarchy is made with weight and size instead. Applied
+     broadly because font-family is declared in twenty-odd rules across this sheet and
+     chasing each one would leave gaps. */
+  html[lang='ar'] body,
+  html[lang='ar'] body * {
+    font-family: 'IBM Plex Sans Arabic', 'Inter', system-ui, sans-serif;
+  }
+
+  /* Arabic script sits taller in its line box than Latin, so the tight display leading
+     that suits Spectral leaves the ascenders and descenders touching. */
+  html[lang='ar'] .t-display,
+  html[lang='ar'] .t-h2-center,
+  html[lang='ar'] .t-h3 { line-height: 1.35; letter-spacing: 0; }
+
+  html[lang='ar'] .t-lead,
+  html[lang='ar'] .t-body,
+  html[lang='ar'] .t-sub { line-height: 1.9; }
+
+  /* Uppercase and wide tracking do nothing in Arabic — the script has no capitals and
+     letters join, so spacing them out breaks the joins. */
+  html[lang='ar'] .t-overline,
+  html[lang='ar'] .pill-tag,
+  html[lang='ar'] .soon-tag,
+  html[lang='ar'] .terms-facts dt {
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  /* ---- flips that physical properties cannot do on their own ---- */
+
+  /* the arrow in a button points the way the text runs */
+  html[dir='rtl'] .btn-primary:hover .icon,
+  html[dir='rtl'] .footer-email:hover { transform: translateX(-3px); }
+
+  html[dir='rtl'] .btn .icon-sm[aria-hidden] { transform: scaleX(-1); }
+
+  /* The mockup photos are not mirrored: the app UI inside them is real English
+     screenshot content and flipping it would render the interface backwards. Only the
+     cards around the phone swap sides. */
+  @media (min-width: 1280px) {
+    html[dir='rtl'] .phone-note[data-side='left'] { right: auto; left: calc(100% - 90px); }
+    html[dir='rtl'] .phone-note[data-side='right'] { left: auto; right: calc(100% - 90px); }
+    html[dir='rtl'] .phone-note[data-depth='far'][data-side='left'] { right: auto; left: calc(100% - 78px); }
+    html[dir='rtl'] .phone-note[data-depth='far'][data-side='right'] { left: auto; right: calc(100% - 78px); }
+  }
+
+  /* decorative art anchored with physical offsets */
+  html[dir='rtl'] .problem-photo { left: auto; right: 21%; }
+  html[dir='rtl'] .hero-art,
+  html[dir='rtl'] .features-art,
+  html[dir='rtl'] .journey-tooth,
+  html[dir='rtl'] .footer-art { transform: scaleX(-1); }
+
+  /* ...but anything with text on top of mirrored art has to be un-mirrored again */
+  html[dir='rtl'] .hero-art > *,
+  html[dir='rtl'] .features-art > *,
+  html[dir='rtl'] .footer-art > * { transform: scaleX(-1); }
+
+  /* The English terms keep their own direction and typography inside the Arabic page:
+     a left-to-right document set in an Arabic face would be neither. */
+  html[lang='ar'] .terms { direction: ltr; text-align: left; }
+
+  html[lang='ar'] .terms,
+  html[lang='ar'] .terms p,
+  html[lang='ar'] .terms li,
+  html[lang='ar'] .terms h4 { font-family: 'Inter', system-ui, sans-serif; }
+
+  html[lang='ar'] .terms h3 { font-family: 'Spectral', Georgia, serif; }
+
+  /* Says, in Arabic, that the document below it is in English */
+  .terms-lang-note {
+    display: none;
+    direction: rtl;
+    text-align: right;
+    margin-bottom: var(--s-5);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-sm);
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid var(--glass-line);
+    font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--ink-body);
+  }
+
+  html[lang='ar'] .terms-lang-note { display: block; }
 
   /* ============================================================
      COMPONENT — Modal
@@ -2369,7 +2466,7 @@
       grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
       align-items: center;
       gap: var(--s-10);
-      text-align: left;
+      text-align: start;
       /* pins while the scroll runway passes, so the tabs can be scroll-driven */
       position: sticky;
       top: clamp(76px, 11vh, 118px);
@@ -3317,6 +3414,7 @@
     </div>
 
     <div class="modal-body terms">
+      <p class="terms-lang-note">هذه الوثيقة متاحة حاليًا باللغة الإنجليزية فقط. النسخة العربية قيد الإعداد.</p>
       <h3>1. Introduction and Acceptance</h3>
       <p>These Terms and Conditions (the “Terms”) govern your access to and use of the Dentlora dental platform, including the Dentlora website, the patient mobile application, the doctor application, the clinic dashboard, and the administration dashboard (together, the “Platform”). Dentlora is a digital dental ecosystem that connects patients, dentists, and dental clinics through one integrated system covering the full care journey, from discovery and booking through treatment, prescription, follow-up, and ongoing care tracking.</p>
       <p>By downloading, accessing, registering for, or using the Platform, you confirm that you have read, understood, and agree to be bound by these Terms and by the Dentlora Privacy Policy. If you do not agree, you must not use the Platform.</p>
@@ -3521,6 +3619,12 @@
         // label spans only, so each button keeps its icon
         heroEls.primary.textContent = copy.primary;
         heroEls.secondary.textContent = copy.secondary;
+
+        /* This just wrote English over whatever was there. Clear the stashed original —
+           it belongs to the role we left — and let the translator run again. */
+        delete heroEls.headline.dataset.en;
+        delete heroEls.headline.dataset.enText;
+        if (window.__applyLang) window.__applyLang(window.__currentLang());
       };
 
       const selectRole = (tab) => {
@@ -3691,6 +3795,311 @@
       );
       sections.forEach((s) => spy.observe(s));
     }
+
+  /* ---- Arabic copy ----
+     Keyed on the English string as it stands in the markup, so nothing had to be
+     tagged and no string can be missed by a forgotten attribute. Split headings are
+     not in here: a heading broken across lines cannot be translated line by line
+     because Arabic orders the clause differently, so those are handled whole below. */
+  const AR = {
+    // nav + header
+    'Home': 'الرئيسية',
+    'Features': 'المميزات',
+    'For Patients': 'للمرضى',
+    'About Us': 'من نحن',
+    'How It Works': 'كيف يعمل',
+    'Contact': 'تواصل معنا',
+    'Find a Dentist': 'ابحث عن طبيب',
+    'Book a Demo': 'اطلب عرضًا توضيحيًا',
+    'How Dentlora Works': 'كيف تعمل دنتلورا',
+    'See How It Works': 'شاهد كيف يعمل',
+
+    // hero
+    'All your dental care in one place': 'رعاية أسنانك كلها في مكان واحد',
+    'For patients': 'للمرضى',
+    'For doctors & clinics': 'للأطباء والعيادات',
+    'Find trusted dentists, book appointments, follow your treatment plan, and keep all your dental records organized.':
+      'اعثر على أطباء موثوقين، واحجز مواعيدك، وتابع خطة علاجك، واحتفظ بسجلاتك السنية منظمة في مكان واحد.',
+    'Manage sessions, prescriptions, treatment plans, and follow-ups — all from one connected workspace built for dental teams.':
+      'أدر الجلسات والوصفات وخطط العلاج والمتابعات — من مساحة عمل واحدة مصممة لفرق طب الأسنان.',
+    'Secure & Private': 'آمن وخاص',
+    'Your data is protected': 'بياناتك محمية',
+    'Trusted Professionals': 'نخبة موثوقة',
+    'Verified dentists & clinics': 'أطباء وعيادات موثّقون',
+    'Personalized Care': 'رعاية مخصصة',
+    'Tailored to your needs': 'مصممة على احتياجك',
+
+    // app showcase
+    'Patient app': 'تطبيق المريض',
+    'Book appointments, track your treatment, and view your prescriptions — anytime, anywhere.':
+      'احجز مواعيدك، وتابع علاجك، واطّلع على وصفاتك — في أي وقت ومن أي مكان.',
+    'Book': 'الحجز',
+    'Track': 'المتابعة',
+    'Records': 'السجلات',
+    'Download': 'التحميل',
+    'Appointment confirmed': 'تم تأكيد الموعد',
+    'Dr. Ahmed — Tue, 10:30 AM': 'د. أحمد — الثلاثاء، ١٠:٣٠ ص',
+    '3 clinics near you': '٣ عيادات قريبة منك',
+    'Closest is 2.4 km away': 'أقربها على بعد ٢٫٤ كم',
+    'Reminder set': 'تم ضبط التذكير',
+    "We'll nudge you a day before": 'سنذكّرك قبلها بيوم',
+    'Verified dentist': 'طبيب موثّق',
+    '4.9 from 210 patients': '٤٫٩ من ٢١٠ مرضى',
+    'Session 3 of 5 complete': 'اكتملت الجلسة ٣ من ٥',
+    'Treatment 75% done': 'أُنجز ٧٥٪ من العلاج',
+    'Next visit in 12 days': 'الزيارة القادمة بعد ١٢ يومًا',
+    'Mar 24 — 4:00 PM': '٢٤ مارس — ٤:٠٠ م',
+    'On track': 'على المسار',
+    '2 days ahead of plan': 'متقدم يومين عن الخطة',
+    'Aligner change due': 'موعد تغيير التقويم',
+    'Switch to tray 8 tonight': 'انتقل إلى القالب ٨ الليلة',
+    'X-ray uploaded': 'تم رفع الأشعة',
+    'Panoramic — 12 Mar': 'بانورامية — ١٢ مارس',
+    'Prescription ready': 'الوصفة جاهزة',
+    'Amoxicillin 500mg — PDF': 'أموكسيسيلين ٥٠٠ مجم — PDF',
+    '12 documents stored': '١٢ مستندًا محفوظًا',
+    'All in one place': 'كلها في مكان واحد',
+    'Shared securely': 'مشاركة آمنة',
+    'Visible to Dr. Ahmed only': 'مرئية للدكتور أحمد فقط',
+    'App Store': 'آب ستور',
+    'iPhone & iPad': 'آيفون وآيباد',
+    'Google Play': 'جوجل بلاي',
+    'Android 9 and up': 'أندرويد ٩ فأحدث',
+    'Soon': 'قريبًا',
+    'Set up in minutes': 'جاهز في دقائق',
+    "Sign in and you're ready": 'سجّل دخولك وابدأ',
+    'Private by default': 'خصوصية افتراضية',
+    'Only you and your dentist': 'أنت وطبيبك فقط',
+
+    // features
+    'From your first visit to your last follow-up — everything stays connected.':
+      'من زيارتك الأولى إلى آخر متابعة — كل شيء يبقى متصلًا.',
+    'From the first session to the last follow-up — everything stays in one workspace.':
+      'من الجلسة الأولى إلى آخر متابعة — كل شيء في مساحة عمل واحدة.',
+    'Treatment Plans': 'خطط العلاج',
+    'Session & Notes': 'الجلسات والملاحظات',
+    'Personalized plans designed by your dentist, tailored to your needs.':
+      'خطط مخصصة يضعها طبيبك على مقاس احتياجك.',
+    'Document every session and connect it instantly to a prescription or treatment plan.':
+      'وثّق كل جلسة واربطها فورًا بوصفة أو خطة علاج.',
+    'Orthodontic Braces': 'تقويم الأسنان',
+    'Initial Consultation — Completed': 'الاستشارة الأولى — مكتملة',
+    'Braces Installation — Completed': 'تركيب التقويم — مكتمل',
+    'Adjustment — In Progress': 'الضبط — قيد التنفيذ',
+    'Retainer Phase — Pending': 'مرحلة المثبّت — قادمة',
+    'Session Tracking': 'متابعة الجلسات',
+    'Practice Overview': 'نظرة عامة على العيادة',
+    'Track every visit, procedure, and progress in one beautiful timeline.':
+      'تابع كل زيارة وإجراء وتقدّم في مسار زمني واحد واضح.',
+    'Track appointments, payment confirmations, and schedules from one dashboard.':
+      'تابع المواعيد وتأكيدات الدفع والجداول من لوحة واحدة.',
+    'May 12, 2025': '١٢ مايو ٢٠٢٥',
+    'Teeth Cleaning': 'تنظيف الأسنان',
+    'Apr 16, 2025': '١٦ أبريل ٢٠٢٥',
+    'Filling': 'حشو',
+    'Mar 10, 2025': '١٠ مارس ٢٠٢٥',
+    'Consultation': 'استشارة',
+    'Medical Portfolio': 'الملف الطبي',
+    'Patient Records, Simplified': 'سجلات المرضى ببساطة',
+    'All your records, prescriptions, and reports securely stored and easily accessible.':
+      'كل سجلاتك ووصفاتك وتقاريرك محفوظة بأمان وفي متناول يدك.',
+    'Access complete, read-only patient history — securely, whenever you need it.':
+      'اطّلع على تاريخ المريض كاملًا للقراءة فقط — بأمان ووقتما تحتاج.',
+    'X-ray Report': 'تقرير الأشعة',
+    'Prescription': 'الوصفة',
+    'Treatment Plan': 'خطة العلاج',
+
+    // for patients / clinics
+    'Book Appointments': 'حجز المواعيد',
+    'Manage Sessions': 'إدارة الجلسات',
+    'Track Progress': 'متابعة التقدّم',
+    'Prescriptions': 'الوصفات',
+    'Follow-up Care': 'رعاية المتابعة',
+    'Follow-Up Decisions': 'قرارات المتابعة',
+    'All Records in One Place': 'كل السجلات في مكان واحد',
+    'Patient Records': 'سجلات المرضى',
+    'Templates': 'القوالب',
+    'All-in-one care experience': 'تجربة رعاية متكاملة',
+    'One connected workflow': 'مسار عمل واحد متصل',
+    'Dentlora brings every part of your dental care together — so you can focus on what matters most: your health and your smile.':
+      'تجمع دنتلورا كل جوانب رعاية أسنانك في مكان واحد — لتركّز على ما يهم فعلًا: صحتك وابتسامتك.',
+    'Every session, plan and follow-up in one workspace — so your team can focus on care instead of chasing paperwork.':
+      'كل جلسة وخطة ومتابعة في مساحة واحدة — ليتفرغ فريقك للرعاية بدل ملاحقة الأوراق.',
+    'Find and book appointments with trusted dentists.': 'ابحث واحجز مواعيدك مع أطباء موثوقين.',
+    'View, confirm and document each session as your day runs.': 'اعرض وأكّد ووثّق كل جلسة أولًا بأول خلال يومك.',
+    'View your personalized plans and track each step.': 'اطّلع على خططك المخصصة وتابع كل خطوة.',
+    'Build and update plans, and share each step with the patient.': 'ابنِ الخطط وحدّثها، وشارك كل خطوة مع المريض.',
+    'Monitor your treatment journey in real time.': 'راقب رحلة علاجك لحظة بلحظة.',
+    'Issue prescriptions and attach them to the right session.': 'أصدر الوصفات وأرفقها بالجلسة الصحيحة.',
+    'Access prescriptions and medications anytime.': 'اطّلع على وصفاتك وأدويتك في أي وقت.',
+    'Decide on follow-ups and schedule them in the same flow.': 'قرّر المتابعات وحدّد مواعيدها في المسار نفسه.',
+    'Your X-rays, reports, and documents — always secure.': 'أشعتك وتقاريرك ومستنداتك — محفوظة دائمًا بأمان.',
+    'Complete, read-only patient history whenever you need it.': 'تاريخ المريض كاملًا للقراءة فقط وقتما تحتاج.',
+    'Get reminders and stay on top of your follow-ups.': 'استلم التذكيرات وابقَ على اطلاع بمتابعاتك.',
+    'Reuse your common notes and plans instead of retyping them.': 'أعد استخدام ملاحظاتك وخططك المتكررة بدل كتابتها من جديد.',
+
+    // the problem section
+    'Appointment Reminder': 'تذكير بالموعد',
+    'May 22, 2026': '٢٢ مايو ٢٠٢٦',
+    '10:30 AM': '١٠:٣٠ ص',
+    'Upcoming visit with Dr. Ahmed': 'زيارة قادمة مع د. أحمد',
+    'Prescription Ready': 'الوصفة جاهزة',
+    'Antibiotic Gel': 'جل مضاد حيوي',
+    'Step 2 of 4': 'الخطوة ٢ من ٤',
+    'In Progress': 'قيد التنفيذ',
+    'Patient Record': 'سجل المريض',
+    'May 2026': 'مايو ٢٠٢٦',
+    'Follow-Up Needed': 'المتابعة مطلوبة',
+    'Submit your symptoms': 'أرسل أعراضك',
+    'The problem': 'المشكلة',
+    "A missed reminder. A lost prescription. A treatment plan you can't quite remember. Dental care often lives in too many places at once — and patients are the ones left piecing it together.":
+      'تذكير فات. وصفة ضاعت. خطة علاج لا تتذكرها تمامًا. رعاية الأسنان غالبًا موزعة على أماكن كثيرة — والمريض هو من يتحمل جمع الخيوط.',
+    'Missed Appointment Details': 'تفاصيل مواعيد ضائعة',
+    'Dates, times, and visit info are easy to lose track of.': 'التواريخ والأوقات وتفاصيل الزيارة يسهل فقدان أثرها.',
+    'Lost Prescriptions': 'وصفات مفقودة',
+    "Important prescription details aren't always easy to find later.": 'تفاصيل الوصفة المهمة ليس من السهل دائمًا العثور عليها لاحقًا.',
+    'Unclear Treatment Steps': 'خطوات علاج غير واضحة',
+    "It's hard to remember what comes next in the plan.": 'من الصعب تذكّر ما هي الخطوة التالية في الخطة.',
+    'Scattered Records': 'سجلات متفرقة',
+    'Reports, files, and notes often live in separate places.': 'التقارير والملفات والملاحظات غالبًا في أماكن منفصلة.',
+    'No Follow-Up Visibility': 'غياب وضوح المتابعة',
+    'Patients can struggle to see what follow-up is needed next.': 'يصعب على المريض معرفة المتابعة المطلوبة بعد ذلك.',
+
+    // how it works
+    'How it works': 'كيف يعمل',
+    'Dentlora keeps every part of your dental care in one clear, connected flow — from booking to follow-up.':
+      'تُبقي دنتلورا كل جزء من رعاية أسنانك في مسار واحد واضح ومتصل — من الحجز إلى المتابعة.',
+    'Dentlora keeps your practice in one clear, connected flow — from setting up your profile to tracking patient progress.':
+      'تُبقي دنتلورا عيادتك في مسار واحد واضح ومتصل — من إعداد ملفك إلى متابعة تقدّم المرضى.',
+    'Choose your country': 'اختر دولتك',
+    'Set up your profile': 'أعدّ ملفك',
+    'Find and book visits with trusted dentists in just a few taps.': 'ابحث واحجز زياراتك مع أطباء موثوقين بلمسات قليلة.',
+    'Join through your clinic and set your availability.': 'انضم عبر عيادتك وحدّد أوقات توفرك.',
+    'Find the right dentist': 'اعثر على الطبيب المناسب',
+    'Manage your day': 'أدر يومك',
+    'Get a personalized plan tailored to your dental needs and goals.': 'احصل على خطة مخصصة على مقاس احتياجك وأهدافك.',
+    'View and manage appointments in real time.': 'اعرض وأدر المواعيد لحظة بلحظة.',
+    'Book your appointment': 'احجز موعدك',
+    'Document each session': 'وثّق كل جلسة',
+    'Monitor your progress, upcoming visits, and updates in one place.': 'تابع تقدّمك وزياراتك القادمة والتحديثات في مكان واحد.',
+    'Add notes, prescriptions, and treatment plans.': 'أضف الملاحظات والوصفات وخطط العلاج.',
+    'Attend your session': 'احضر جلستك',
+    'Decide on follow-ups': 'قرّر المتابعات',
+    'Access and manage prescriptions and medication instructions anytime.': 'اطّلع على وصفاتك وتعليمات الدواء وأدرها في أي وقت.',
+    'Create follow-up sessions when they are needed.': 'أنشئ جلسات متابعة عند الحاجة إليها.',
+    'Track your care afterward': 'تابع رعايتك بعد الزيارة',
+    'Track patient progress': 'تابع تقدّم المرضى',
+    'Stay on top of reminders, follow-ups, and next steps after each visit.': 'ابقَ على اطلاع بالتذكيرات والمتابعات والخطوات التالية بعد كل زيارة.',
+    'See the full care history in one place.': 'اطّلع على تاريخ الرعاية كاملًا في مكان واحد.',
+
+    // footer
+    'Your smile, our care': 'ابتسامتك، رعايتنا',
+    'Connected dental care for patients, doctors, and clinics — from booking to follow-up.':
+      'رعاية أسنان متصلة للمرضى والأطباء والعيادات — من الحجز إلى المتابعة.',
+    'Follow us': 'تابعنا',
+    '© 2026 Dentlora. All rights reserved.': '© ٢٠٢٦ دنتلورا. جميع الحقوق محفوظة.',
+    'Terms & Conditions': 'الشروط والأحكام',
+  };
+
+  /* Headings broken across lines. Arabic reorders the clause, so these are swapped as a
+     whole block of markup rather than line by line — keyed on the element's text with
+     whitespace collapsed, which is stable against how the source happens to be indented. */
+  const AR_HTML = {
+    'Care for your smile. Confidently.':
+      'اعتنِ بابتسامتك<br /> بكل <span class="accent">ثقة.</span>',
+    'Run your whole practice. Confidently.':
+      'أدر عيادتك بالكامل<br /> بكل <span class="accent">ثقة.</span>',
+    'Dentlora, right in your pocket.':
+      'دنتلورا معك <span class="accent">في جيبك.</span>',
+    'Designed aroundyour dental journey.':
+      'مصمم حول<br /><span class="accent">رحلة أسنانك.</span>',
+    'Designed aroundyour day-to-day practice.':
+      'مصمم حول<br /><span class="accent">عملك اليومي.</span>',
+    'One journey.Every step, connected.':
+      'رحلة واحدة.<br />كل خطوة فيها <span class="accent">متصلة.</span>',
+    'One workflow.Every step, connected.':
+      'مسار واحد.<br />كل خطوة فيه <span class="accent">متصلة.</span>',
+    "Dental care shouldn't feel this scattered.":
+      'رعاية الأسنان لا يجب<br /> أن تكون بهذا <span class="accent">التشتت.</span>',
+    'From booking to follow-up,in five simple steps.':
+      'من الحجز إلى المتابعة،<br />في <span class="accent">خمس خطوات بسيطة.</span>',
+    'From onboarding to follow-up,in five simple steps.':
+      'من الانضمام إلى المتابعة،<br />في <span class="accent">خمس خطوات بسيطة.</span>',
+    'Ready for calmer dental care?':
+      'مستعد لرعاية أسنان <span class="accent">أكثر هدوءًا؟</span>',
+    'Ready for a calmer practice?':
+      'مستعد لعيادة <span class="accent">أكثر هدوءًا؟</span>',
+  };
+
+  /* ---- language ----
+     Applied over the English markup rather than served as a second page, so there is one
+     file to edit and no risk of the two drifting. Nothing in the DOM is tagged: the
+     dictionary is keyed on the English text itself, so a string cannot be missed by a
+     forgotten attribute. The original English is stashed on each node the first time it
+     is touched, which is what makes switching back exact. */
+  const langBtns = [...document.querySelectorAll('.lang-switch button')];
+  const norm = (s) => s.replace(/\s+/g, ' ').trim();
+
+  const applyLang = (lang) => {
+    const ar = lang === 'ar';
+    document.documentElement.lang = ar ? 'ar' : 'en';
+    document.documentElement.dir = ar ? 'rtl' : 'ltr';
+
+    // whole-block headings first, or their inner text nodes get swapped piecemeal
+    document.querySelectorAll('h1, h2, h1 [data-for], h2 [data-for]').forEach((el) => {
+      if (!el.querySelector('br, .accent')) return;
+      const key = el.dataset.enText || norm(el.textContent);
+      /* Only touch a heading that is actually in the map. A role-swapped h2 wraps the two
+         variants and is not itself a key; rewriting its innerHTML would detach the very
+         spans that are, and this NodeList was taken before that happened. */
+      if (!AR_HTML[key]) return;
+      if (el.dataset.en === undefined) {
+        el.dataset.en = el.innerHTML;
+        el.dataset.enText = key;
+      }
+      el.innerHTML = ar ? AR_HTML[key] : el.dataset.en;
+    });
+
+    // then every remaining text node
+    const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const skip = new Set(['SCRIPT', 'STYLE']);
+    let n;
+    while ((n = walk.nextNode())) {
+      const el = n.parentElement;
+      if (!el || skip.has(el.tagName)) continue;
+      if (el.closest('.terms') || el.closest('.lang-switch')) continue;
+      if (el.closest('h1, h2') && el.closest('h1, h2').querySelector('br, .accent')) continue;
+      const key = norm(n.textContent);
+      if (!key) continue;
+      if (n.__en === undefined) n.__en = n.textContent;
+      const hit = AR[norm(n.__en)];
+      if (!hit) continue;
+      /* Keep the surrounding whitespace so inline runs do not lose their spacing.
+         Taken from the ends rather than by substituting the normalised form, because the
+         source wraps long sentences across lines and the collapsed string is then not a
+         substring of the original at all. */
+      const trimmed = n.__en.trim();
+      const at = n.__en.indexOf(trimmed);
+      const lead = n.__en.slice(0, at);
+      const trail = n.__en.slice(at + trimmed.length);
+      n.textContent = ar ? lead + hit + trail : n.__en;
+    }
+
+    langBtns.forEach((b) => b.classList.toggle('is-active', (b.lang === 'ar') === ar));
+    try { localStorage.setItem('dentlora-lang', lang); } catch (e) { /* private mode */ }
+  };
+
+  /* The hero copy is rewritten in English whenever the patient/clinic role changes, so
+     that path has to re-run this afterwards — and drop the stashed English first, since
+     it now belongs to the previous role. */
+  window.__applyLang = applyLang;
+  window.__currentLang = () => (document.documentElement.lang === 'ar' ? 'ar' : 'en');
+
+  langBtns.forEach((b) => b.addEventListener('click', () => applyLang(b.lang === 'ar' ? 'ar' : 'en')));
+
+  let saved = null;
+  try { saved = localStorage.getItem('dentlora-lang'); } catch (e) { /* private mode */ }
+  if (saved === 'ar') applyLang('ar');
 
     /* ---- modals ----
        <dialog> already handles Escape, the focus trap and returning focus to whatever
